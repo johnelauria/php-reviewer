@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import com.johngeli.zendreviewer.database.Questions
 import kotlinx.android.synthetic.main.activity_questions_list.*
 import kotlinx.android.synthetic.main.app_bar_questions_list.*
 
@@ -30,7 +31,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
-        populateNavView(nav_view)
+        populateNavView(nav_view, intent.extras.getString("questionNum"))
     }
 
     override fun onBackPressed() {
@@ -51,9 +52,9 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        when (item.itemId) {
-            R.id.action_settings -> return true
-            else -> return super.onOptionsItemSelected(item)
+        return when (item.itemId) {
+            R.id.action_settings -> true
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -65,9 +66,12 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         return true
     }
 
-    private fun populateNavView(navView: NavigationView) {
-        navView.menu.add(R.id.questionItemGroup, 1, Menu.NONE, "some question here")
-        navView.menu.add(R.id.questionItemGroup, 2, Menu.NONE, "some question here2")
+    private fun populateNavView(navView: NavigationView, questionNum: String?) {
+        val questionsDB = Questions(this)
+        for (question in questionsDB.getQuestions("some", questionNum ?: "25").withIndex()) {
+            navView.menu.add(R.id.questionItemGroup, question.index, Menu.NONE, question.value.substring(0, 35))
+        }
+
         navView.menu.setGroupCheckable(R.id.questionItemGroup, true, true)
     }
 }

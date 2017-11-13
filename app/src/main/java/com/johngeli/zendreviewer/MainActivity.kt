@@ -2,7 +2,6 @@ package com.johngeli.zendreviewer
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,7 +13,8 @@ import android.widget.EditText
 import android.widget.Spinner
 import com.johngeli.zendreviewer.database.Questions
 
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.startQuizFab
+import kotlinx.android.synthetic.main.activity_main.toolbar
 
 class MainActivity : AppCompatActivity(), TextWatcher {
     private lateinit var questionNumET: EditText
@@ -23,11 +23,13 @@ class MainActivity : AppCompatActivity(), TextWatcher {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        questionNumET = findViewById(R.id.questionNumET)
 
-        startQuizFab.setOnClickListener { view ->
-            startActivity(Intent("android.intent.action.QUESTIONS_LIST"))
+        startQuizFab.setOnClickListener { _ ->
+            val questionsListIntent = Intent("android.intent.action.QUESTIONS_LIST")
+            questionsListIntent.putExtra("questionNum", questionNumET.text.toString())
+            startActivity(questionsListIntent)
         }
-        questionNumET = findViewById<EditText>(R.id.questionNumET)
         questionNumET.addTextChangedListener(this)
 
         populateCategories()
