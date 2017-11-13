@@ -15,6 +15,7 @@ import com.johngeli.zendreviewer.database.Questions
 
 import kotlinx.android.synthetic.main.activity_main.startQuizFab
 import kotlinx.android.synthetic.main.activity_main.toolbar
+import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity(), TextWatcher {
     private lateinit var questionNumET: EditText
@@ -24,10 +25,12 @@ class MainActivity : AppCompatActivity(), TextWatcher {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         questionNumET = findViewById(R.id.questionNumET)
+        val categorySpinner = findViewById<Spinner>(R.id.categorySpinner)
 
         startQuizFab.setOnClickListener { _ ->
             val questionsListIntent = Intent("android.intent.action.QUESTIONS_LIST")
             questionsListIntent.putExtra("questionNum", questionNumET.text.toString())
+            questionsListIntent.putExtra("questionType", categorySpinner.selectedItem.toString())
             startActivity(questionsListIntent)
         }
         questionNumET.addTextChangedListener(this)
