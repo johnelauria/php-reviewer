@@ -96,7 +96,6 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
 
     private fun populateNavView(navView: NavigationView, questionNum: String, questionType: String) {
         val questionsDB = Questions(this)
-        var ctr = 0
         var firstQuestionID: Int? = null
         questionsList = questionsDB.getQuestions(questionType, questionNum)
 
