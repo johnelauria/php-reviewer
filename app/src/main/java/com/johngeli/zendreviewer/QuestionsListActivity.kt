@@ -10,17 +10,19 @@ import android.support.v7.app.AppCompatActivity
 import android.text.Html
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.TextView
-import android.widget.Toast
 import com.johngeli.zendreviewer.data.QuestionsData
 import com.johngeli.zendreviewer.database.Questions
 import kotlinx.android.synthetic.main.activity_questions_list.*
 import kotlinx.android.synthetic.main.app_bar_questions_list.*
 
-class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, RadioGroup.OnCheckedChangeListener {
     private lateinit var questionTV: TextView
-    private lateinit var answersTV: TextView
     private lateinit var questionsList: MutableMap<Int, QuestionsData>
+    private lateinit var answersRadioGrp: RadioGroup
+    private var selectedQuestion: QuestionsData? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,11 +30,12 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         setSupportActionBar(toolbar)
 
         questionTV = findViewById(R.id.questionTV)
-        answersTV = findViewById(R.id.answersTV)
+        answersRadioGrp = findViewById(R.id.answersRadioGrp)
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
+        answersRadioGrp.setOnCheckedChangeListener(this)
 
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -67,16 +70,25 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         }
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
-        var ansOptions = ""
-        Toast.makeText(this, item.itemId.toString(), Toast.LENGTH_SHORT).show()
-        questionTV.text = formatHTMLToAndroid(questionsList[item.itemId]!!.question)
-
-        for (answer in questionsList[item.itemId]!!.answerOptions) {
-            ansOptions += "$answer\n"
+    override fun onCheckedChanged(radio: RadioGroup?, id: Int) {
+        val selectedRadio = findViewById<RadioButton>(id)
+        if (selectedRadio != null) {
+            selectedQuestion?.usersAnswers?.add(selectedRadio.text.toString())
         }
-        answersTV.text = ansOptions
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        val questionData = questionsList[item.itemId]!!
+        questionTV.text = formatHTMLToAndroid(questionData.question)
+        answersRadioGrp.removeAllViews()
+        selectedQuestion = questionData
+
+        for (answer in questionData.answerOptions) {
+            val radioButton = RadioButton(this)
+            radioButton.text = answer
+            radioButton.isChecked = questionData.isAnswerSelected(answer)
+            answersRadioGrp.addView(radioButton)
+        }
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
