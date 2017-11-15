@@ -36,25 +36,42 @@ class Questions(context: Context) : PhpReviewDb(context) {
     /**
      * Query the list of questions from database
      */
-    fun getQuestions(questionType: String, questionNum: String): MutableList<QuestionsData> {
+    fun getQuestions(questionType: String, questionNum: String): MutableMap<Int, QuestionsData> {
         open()
-        val result = mutableListOf<QuestionsData>()
-        val query = "SELECT q._id, q.question, qt.question_type, at.answer_type FROM questions q INNER JOIN question_types qt ON q.question_type_id = qt._id INNER JOIN answer_types at ON q.answer_type_id = at._id WHERE qt.question_type = ? ORDER BY RANDOM() LIMIT ?"
+        val result = mutableMapOf<Int, QuestionsData>()
+        val query = "SELECT q._id, q.question, qt.question_type, at.answer_type, a.answer, a.is_correct FROM questions q INNER JOIN question_types qt ON q.question_type_id = qt._id INNER JOIN answer_types at ON q.answer_type_id = at._id INNER JOIN answers a ON q._id = a.question_id WHERE qt.question_type = ? ORDER BY RANDOM() LIMIT ?"
         val cursor = database.rawQuery(query, listOf(questionType, questionNum).toTypedArray())
         cursor.moveToFirst()
 
         while (!cursor.isAfterLast) {
-            val questionsData = QuestionsData(
-                    cursor.getInt(cursor.getColumnIndex("_id")),
-                    cursor.getString(cursor.getColumnIndex("question")),
-                    cursor.getString(cursor.getColumnIndex("question_type")),
-                    cursor.getString(cursor.getColumnIndex("answer_type"))
-            )
-            result.add(questionsData)
+            val questionId = cursor.getInt(cursor.getColumnIndex("_id"))
+            val answerOption = cursor.getString(cursor.getColumnIndex("answer"))
+
+            if (!result.containsKey(questionId)) {
+                result[questionId] = QuestionsData(
+                        cursor.getInt(cursor.getColumnIndex("_id")),
+                        cursor.getString(cursor.getColumnIndex("question")),
+                        cursor.getString(cursor.getColumnIndex("question_type")),
+                        cursor.getString(cursor.getColumnIndex("answer_type"))
+                )
+            }
+
+            if (cursor.getInt(cursor.getColumnIndex("is_correct")) == 1) {
+                result[questionId]?.correctAnswers?.add(answerOption)
+            }
+
+            result[questionId]?.answerOptions?.add(answerOption)
             cursor.moveToNext()
         }
 
         cursor.close()
         return result
+    }
+
+    /**
+     * Generates the data for single select type questions
+     */
+    private fun genSingleQuestions(): MutableList<String> {
+        return mutableListOf("")
     }
 }

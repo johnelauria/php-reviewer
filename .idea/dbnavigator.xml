@@ -23,11 +23,7 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
-    <loaded-nodes>
-      <connection connection-id="f63149a3-2261-4dbb-9c43-00679c3f7251">
-        <schema name="main" object-types="column, table, view" />
-      </connection>
-    </loaded-nodes>
+    <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="f63149a3-2261-4dbb-9c43-00679c3f7251">
@@ -35,16 +31,22 @@
 INNER JOIN question_types qt ON q.question_type_id = qt._id
 INNER JOIN answer_types ON q.answer_type_id = answer_types._id;
 
-SELECT q._id, q.question, qt.question_type, at.answer_type FROM questions q 
+SELECT q._id, q.question, qt.question_type, at.answer_type, a.answer, a.is_correct FROM questions q
 INNER JOIN question_types qt ON q.question_type_id = qt._id
 INNER JOIN answer_types at ON q.answer_type_id = at._id
+INNER JOIN answers a ON q._id = a.question_id
 WHERE qt.question_type = 'Arrays'
-ORDER BY RANDOM() LIMIT '20';
+ORDER BY a.question_id LIMIT '20';
 
-SELECT question FROM questions ORDER BY RANDOM() LIMIT 1;]]></console>
+SELECT question FROM questions ORDER BY RANDOM() LIMIT 1;
+
+select * from answers;
+
+SELECT * FROM answer_types;]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
+    <filter-list connection-id="f63149a3-2261-4dbb-9c43-00679c3f7251" dataset="main.answers" active-filter-id="" />
     <filter-list connection-id="f63149a3-2261-4dbb-9c43-00679c3f7251" dataset="main.answer_types" active-filter-id="" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">

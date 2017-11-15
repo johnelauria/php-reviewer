@@ -8,7 +8,6 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.text.Html
-import android.text.Spanned
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
@@ -20,7 +19,8 @@ import kotlinx.android.synthetic.main.app_bar_questions_list.*
 
 class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var questionTV: TextView
-    private lateinit var questionsList: MutableList<QuestionsData>
+    private lateinit var answersTV: TextView
+    private lateinit var questionsList: MutableMap<Int, QuestionsData>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +28,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         setSupportActionBar(toolbar)
 
         questionTV = findViewById(R.id.questionTV)
+        answersTV = findViewById(R.id.answersTV)
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
@@ -68,8 +69,14 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
+        var ansOptions = ""
         Toast.makeText(this, item.itemId.toString(), Toast.LENGTH_SHORT).show()
-        questionTV.text = formatHTMLToAndroid(questionsList[item.itemId].question)
+        questionTV.text = formatHTMLToAndroid(questionsList[item.itemId]!!.question)
+
+        for (answer in questionsList[item.itemId]!!.answerOptions) {
+            ansOptions += "$answer\n"
+        }
+        answersTV.text = ansOptions
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
@@ -77,14 +84,18 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
 
     private fun populateNavView(navView: NavigationView, questionNum: String, questionType: String) {
         val questionsDB = Questions(this)
+        var ctr = 0
+        var firstQuestionID: Int? = null
         questionsList = questionsDB.getQuestions(questionType, questionNum)
-        for (question in questionsList.withIndex()) {
-            navView.menu.add(R.id.questionItemGroup, question.index, Menu.NONE, question.value.trimmedQuestion())
+
+        for (question in questionsList) {
+            firstQuestionID = firstQuestionID ?: question.key
+            navView.menu.add(R.id.questionItemGroup, question.key, Menu.NONE, question.value.trimmedQuestion())
         }
 
         navView.menu.setGroupCheckable(R.id.questionItemGroup, true, true)
         navView.menu.getItem(0).isChecked = true
-        questionTV.text = formatHTMLToAndroid(questionsList[0].question)
+        questionTV.text = formatHTMLToAndroid(questionsList[firstQuestionID]!!.question)
     }
 
     private fun formatHTMLToAndroid(content: String): String {

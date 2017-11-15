@@ -9,11 +9,17 @@
     tools:showIn="@layout/app_bar_questions_list">
 
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/questionTV"
             android:textSize="23sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/answersTV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
