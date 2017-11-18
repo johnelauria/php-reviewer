@@ -10,18 +10,20 @@ import android.support.v7.app.AppCompatActivity
 import android.text.Html
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.TextView
+import android.view.View
+import android.widget.*
 import com.johngeli.zendreviewer.data.QuestionsData
 import com.johngeli.zendreviewer.database.Questions
 import kotlinx.android.synthetic.main.activity_questions_list.*
 import kotlinx.android.synthetic.main.app_bar_questions_list.*
 
-class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, RadioGroup.OnCheckedChangeListener {
+class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
+        RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener {
     private lateinit var questionTV: TextView
     private lateinit var questionsList: MutableMap<Int, QuestionsData>
     private lateinit var answersRadioGrp: RadioGroup
+    private lateinit var answersChkBxGrp: LinearLayout
+    private lateinit var answerET: EditText
     private var selectedQuestion: QuestionsData? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,10 +33,8 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
 
         questionTV = findViewById(R.id.questionTV)
         answersRadioGrp = findViewById(R.id.answersRadioGrp)
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
+        answersChkBxGrp = findViewById(R.id.answersChkBxGrp)
+        answerET = findViewById(R.id.answerET)
         answersRadioGrp.setOnCheckedChangeListener(this)
 
         val toggle = ActionBarDrawerToggle(
@@ -44,6 +44,10 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
 
         nav_view.setNavigationItemSelectedListener(this)
         populateNavView(nav_view, intent.extras.getString("questionNum"), intent.extras.getString("questionType"))
+
+        fab.setOnClickListener { view ->
+                // todo iterate to next question
+        }
     }
 
     override fun onBackPressed() {
@@ -73,25 +77,60 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
     override fun onCheckedChanged(radio: RadioGroup?, id: Int) {
         val selectedRadio = findViewById<RadioButton>(id)
         if (selectedRadio != null) {
-            selectedQuestion?.usersAnswers?.add(selectedRadio.text.toString())
+            selectedQuestion?.addUserAnswer(selectedRadio.text.toString())
+        }
+    }
+
+    override fun onCheckedChanged(checkbox: CompoundButton?, isChecked: Boolean) {
+        if (isChecked) {
+            selectedQuestion?.addUserAnswer(checkbox?.text.toString())
+        } else {
+            selectedQuestion?.removeUserAnswer(checkbox?.text.toString())
         }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        val questionData = questionsList[item.itemId]!!
-        questionTV.text = formatHTMLToAndroid(questionData.question)
-        answersRadioGrp.removeAllViews()
-        selectedQuestion = questionData
-
-        for (answer in questionData.answerOptions) {
-            val radioButton = RadioButton(this)
-            radioButton.text = answer
-            radioButton.isChecked = questionData.isAnswerSelected(answer)
-            answersRadioGrp.addView(radioButton)
-        }
+        displayQuestion(item.itemId)
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    private fun displayQuestion(questionId: Int) {
+        val questionData = questionsList[questionId]!!
+        // Setup question and clear all answer options / EditText
+        questionTV.text = formatHTMLToAndroid(questionData.question)
+        answersRadioGrp.removeAllViews()
+        answersChkBxGrp.removeAllViews()
+        answerET.visibility = View.GONE
+
+        // If previous question had single text type, save the answer from EditText first.
+        if (selectedQuestion?.answerType == "TXT") {
+            selectedQuestion?.addUserAnswer(answerET.text.toString())
+        }
+        selectedQuestion = questionData
+
+        for (answer in questionData.answerOptions) {
+            when (questionData.answerType) {
+                "SS" -> {
+                    val radioButton = RadioButton(this)
+                    radioButton.text = answer
+                    answersRadioGrp.addView(radioButton)
+                    radioButton.isChecked = questionData.isAnswerSelected(answer)
+                }
+                "MS" -> {
+                    val checkBox = CheckBox(this)
+                    checkBox.text = answer
+                    answersChkBxGrp.addView(checkBox)
+                    checkBox.isChecked = questionData.isAnswerSelected(answer)
+                    checkBox.setOnCheckedChangeListener(this)
+                }
+                "TXT" -> {
+                    answerET.visibility = View.VISIBLE
+                    answerET.setText(selectedQuestion?.getUserSingleAnswer())
+                }
+            }
+        }
     }
 
     private fun populateNavView(navView: NavigationView, questionNum: String, questionType: String) {
@@ -106,7 +145,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
 
         navView.menu.setGroupCheckable(R.id.questionItemGroup, true, true)
         navView.menu.getItem(0).isChecked = true
-        questionTV.text = formatHTMLToAndroid(questionsList[firstQuestionID]!!.question)
+        displayQuestion(firstQuestionID!!)
     }
 
     private fun formatHTMLToAndroid(content: String): String {

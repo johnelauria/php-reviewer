@@ -40,7 +40,7 @@ class Questions(context: Context) : PhpReviewDb(context) {
     fun getQuestions(questionType: String, questionNum: String): MutableMap<Int, QuestionsData> {
         open()
         val result = mutableMapOf<Int, QuestionsData>()
-        val questionsQuery = "SELECT q._id, q.question, qt.question_type FROM questions q " +
+        val questionsQuery = "SELECT q._id, q.question, q.answer_type_id, qt.question_type FROM questions q " +
                 "INNER JOIN question_types qt ON q.question_type_id = qt._id " +
                 "WHERE qt.question_type = ? ORDER BY RANDOM() LIMIT ?"
 
@@ -56,7 +56,8 @@ class Questions(context: Context) : PhpReviewDb(context) {
                 result[questionId] = QuestionsData(
                         questionsCursor.getInt(questionsCursor.getColumnIndex("_id")),
                         questionsCursor.getString(questionsCursor.getColumnIndex("question")),
-                        questionsCursor.getString(questionsCursor.getColumnIndex("question_type"))
+                        questionsCursor.getString(questionsCursor.getColumnIndex("question_type")),
+                        questionsCursor.getString(questionsCursor.getColumnIndex("answer_type_id"))
                 )
             }
 

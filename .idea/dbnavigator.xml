@@ -40,7 +40,7 @@ INNER JOIN question_types qt ON q.question_type_id = qt._id
 WHERE qt.question_type = 'Arrays'
 ORDER BY q._id LIMIT '20';
 
-SELECT question FROM questions ORDER BY RANDOM() LIMIT 1;
+SELECT * FROM questions ORDER BY RANDOM() LIMIT 20;
 
 select * from answers WHERE question_id IN (702, 830, 185, 204, 212, 214, 206, 829, 835, 161);
 
