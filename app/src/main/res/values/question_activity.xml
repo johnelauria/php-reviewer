@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="questionETHint">Your answer</string>
+    <string name="submitQuiz">Submit</string>
+    <string name="passedResultMsg">Congratulations! You Passed\nYour score is %1$d / %2$d</string>
+    <string name="failedResultMsg">Sorry, You failed!\nYour score is %1$d / %2$d</string>
+    <string name="passed">You Passed!</string>
+    <string name="failed">You Failed!</string>
+    <string name="yourScore">Your score is %1$d / %2$d</string>
 </resources>

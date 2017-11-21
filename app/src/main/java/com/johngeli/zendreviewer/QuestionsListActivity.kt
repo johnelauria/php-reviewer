@@ -2,7 +2,6 @@ package com.johngeli.zendreviewer
 
 import android.os.Build
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
@@ -16,6 +15,7 @@ import com.johngeli.zendreviewer.data.QuestionsData
 import com.johngeli.zendreviewer.database.Questions
 import kotlinx.android.synthetic.main.activity_questions_list.*
 import kotlinx.android.synthetic.main.app_bar_questions_list.*
+import kotlinx.android.synthetic.main.nav_header_questions_list.*
 
 class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
         RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener {
@@ -25,6 +25,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
     private lateinit var answersChkBxGrp: LinearLayout
     private lateinit var answerET: EditText
     private var selectedQuestion: QuestionsData? = null
+    private var isSubmitted = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +70,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.submit_quiz-> displayResults()
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -117,20 +118,26 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
                     radioButton.text = answer
                     answersRadioGrp.addView(radioButton)
                     radioButton.isChecked = questionData.isAnswerSelected(answer)
+                    radioButton.isEnabled = !isSubmitted
                 }
                 "MS" -> {
                     val checkBox = CheckBox(this)
                     checkBox.text = answer
                     answersChkBxGrp.addView(checkBox)
                     checkBox.isChecked = questionData.isAnswerSelected(answer)
+                    checkBox.isEnabled = !isSubmitted
                     checkBox.setOnCheckedChangeListener(this)
                 }
                 "TXT" -> {
                     answerET.visibility = View.VISIBLE
                     answerET.setText(selectedQuestion?.getUserSingleAnswer())
+                    answerET.isEnabled = !isSubmitted
                 }
             }
         }
+
+        answersRadioGrp.visibility = View.VISIBLE
+        answersChkBxGrp.visibility = View.VISIBLE
     }
 
     private fun populateNavView(navView: NavigationView, questionNum: String, questionType: String) {
@@ -154,5 +161,29 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         } else {
             Html.fromHtml(content).toString()
         }
+    }
+
+    private fun displayResults(): Boolean {
+        var score = 0
+        val totalQuestions = questionsList.count()
+
+        for (questionData in questionsList) {
+            if (questionData.value.isCorrect) score++
+        }
+
+        if (score > (totalQuestions / 2)) {
+            questionTV.text = resources.getString(R.string.passedResultMsg, score, totalQuestions)
+            navHeaderText.text = resources.getString(R.string.passed)
+        } else {
+            questionTV.text = resources.getString(R.string.failedResultMsg, score, totalQuestions)
+            navHeaderText.text = resources.getString(R.string.failed)
+        }
+
+        navBodyText.text = resources.getString(R.string.yourScore, score, totalQuestions)
+        answersRadioGrp.visibility = View.GONE
+        answersChkBxGrp.visibility = View.GONE
+        answerET.visibility = View.GONE
+        isSubmitted = true
+        return true
     }
 }

@@ -8,7 +8,7 @@ data class QuestionsData(
         val correctAnswers: MutableList<String> = mutableListOf(),
         val answerOptions: MutableList<String> = mutableListOf(),
         private val usersAnswers: MutableList<String> = mutableListOf(),
-        val isCorrect: Boolean = false
+        var isCorrect: Boolean = false
 ) {
     fun trimmedQuestion(): String {
         if (question.length > 35) {
@@ -27,6 +27,7 @@ data class QuestionsData(
             usersAnswers.clear()
         }
         usersAnswers.add(answer)
+        checkAnswer()
     }
 
     /**
@@ -54,5 +55,16 @@ data class QuestionsData(
      */
     fun isAnswerSelected(answer: String): Boolean {
         return usersAnswers.contains(answer)
+    }
+
+    /**
+     * Compares the user's answer vs the correct answer, then update the "isCorrect" property
+     */
+    private fun checkAnswer() {
+        isCorrect = if (correctAnswers.count() == usersAnswers.count()) {
+            correctAnswers.containsAll(usersAnswers)
+        } else {
+            false
+        }
     }
 }
