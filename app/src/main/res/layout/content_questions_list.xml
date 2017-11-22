@@ -24,8 +24,7 @@
             <RadioGroup
                 android:id="@+id/answersRadioGrp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </RadioGroup>
+                android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:orientation="vertical"
@@ -38,6 +37,14 @@
                 android:hint="@string/questionETHint"
                 android:id="@+id/answerET"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/correctAnswerTV"
+                android:textSize="18sp"
+                android:visibility="gone"
+                android:textColor="@color/correctAnsTxt"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>

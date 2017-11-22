@@ -3,4 +3,6 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="correctAnsTxt">#00760d</color>
+    <color name="correctAnsMarker">#98ff9f</color>
 </resources>

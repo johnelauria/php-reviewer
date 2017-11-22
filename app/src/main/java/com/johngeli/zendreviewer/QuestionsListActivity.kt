@@ -10,19 +10,28 @@ import android.text.Html
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.TextView
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import android.widget.CompoundButton
+import android.widget.LinearLayout
+import android.widget.EditText
+import android.widget.CheckBox
 import com.johngeli.zendreviewer.data.QuestionsData
 import com.johngeli.zendreviewer.database.Questions
-import kotlinx.android.synthetic.main.activity_questions_list.*
-import kotlinx.android.synthetic.main.app_bar_questions_list.*
-import kotlinx.android.synthetic.main.nav_header_questions_list.*
+import kotlinx.android.synthetic.main.activity_questions_list.drawer_layout
+import kotlinx.android.synthetic.main.activity_questions_list.nav_view
+import kotlinx.android.synthetic.main.app_bar_questions_list.toolbar
+import kotlinx.android.synthetic.main.content_questions_list.correctAnswerTV
+import kotlinx.android.synthetic.main.content_questions_list.answersRadioGrp
+import kotlinx.android.synthetic.main.content_questions_list.answersChkBxGrp
+import kotlinx.android.synthetic.main.nav_header_questions_list.navHeaderText
+import kotlinx.android.synthetic.main.nav_header_questions_list.navBodyText
 
 class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
         RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener {
     private lateinit var questionTV: TextView
     private lateinit var questionsList: MutableMap<Int, QuestionsData>
-    private lateinit var answersRadioGrp: RadioGroup
-    private lateinit var answersChkBxGrp: LinearLayout
     private lateinit var answerET: EditText
     private var selectedQuestion: QuestionsData? = null
     private var isSubmitted = false
@@ -33,8 +42,6 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         setSupportActionBar(toolbar)
 
         questionTV = findViewById(R.id.questionTV)
-        answersRadioGrp = findViewById(R.id.answersRadioGrp)
-        answersChkBxGrp = findViewById(R.id.answersChkBxGrp)
         answerET = findViewById(R.id.answerET)
         answersRadioGrp.setOnCheckedChangeListener(this)
 
@@ -45,10 +52,6 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
 
         nav_view.setNavigationItemSelectedListener(this)
         populateNavView(nav_view, intent.extras.getString("questionNum"), intent.extras.getString("questionType"))
-
-        fab.setOnClickListener { view ->
-                // todo iterate to next question
-        }
     }
 
     override fun onBackPressed() {
@@ -70,7 +73,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.submit_quiz-> displayResults()
+            R.id.submit_quiz -> displayResults()
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -112,28 +115,40 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         selectedQuestion = questionData
 
         for (answer in questionData.answerOptions) {
+            var viewElement: View? = null
             when (questionData.answerType) {
                 "SS" -> {
-                    val radioButton = RadioButton(this)
-                    radioButton.text = answer
-                    answersRadioGrp.addView(radioButton)
-                    radioButton.isChecked = questionData.isAnswerSelected(answer)
-                    radioButton.isEnabled = !isSubmitted
+                    viewElement = RadioButton(this)
+                    viewElement.text = answer
+                    viewElement.layoutParams = RadioGroup.LayoutParams(
+                            RadioGroup.LayoutParams.MATCH_PARENT,
+                            RadioGroup.LayoutParams.WRAP_CONTENT
+                    )
+                    answersRadioGrp.addView(viewElement)
+                    viewElement.isChecked = questionData.isAnswerSelected(answer)
+                    viewElement.isEnabled = !isSubmitted
                 }
                 "MS" -> {
-                    val checkBox = CheckBox(this)
-                    checkBox.text = answer
-                    answersChkBxGrp.addView(checkBox)
-                    checkBox.isChecked = questionData.isAnswerSelected(answer)
-                    checkBox.isEnabled = !isSubmitted
-                    checkBox.setOnCheckedChangeListener(this)
+                    viewElement = CheckBox(this)
+                    viewElement.text = answer
+                    viewElement.layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                    )
+                    answersChkBxGrp.addView(viewElement)
+                    viewElement.isChecked = questionData.isAnswerSelected(answer)
+                    viewElement.isEnabled = !isSubmitted
+                    viewElement.setOnCheckedChangeListener(this)
                 }
                 "TXT" -> {
                     answerET.visibility = View.VISIBLE
                     answerET.setText(selectedQuestion?.getUserSingleAnswer())
                     answerET.isEnabled = !isSubmitted
+                    viewElement = answerET
                 }
             }
+
+            markCorrectAnswers(viewElement, answer)
         }
 
         answersRadioGrp.visibility = View.VISIBLE
@@ -155,6 +170,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         displayQuestion(firstQuestionID!!)
     }
 
+    @Suppress("DEPRECATION")
     private fun formatHTMLToAndroid(content: String): String {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Html.fromHtml(content, Html.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL).toString()
@@ -185,5 +201,18 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         answerET.visibility = View.GONE
         isSubmitted = true
         return true
+    }
+
+    @Suppress("DEPRECATION")
+    private fun markCorrectAnswers(view: View?, answer: String) {
+        if (isSubmitted) {
+            if (view is EditText) {
+                correctAnswerTV.text = resources.getString(R.string.correctAnswer, answer)
+                correctAnswerTV.visibility = View.VISIBLE
+            } else if (selectedQuestion!!.correctAnswers.contains(answer)) {
+                view?.setBackgroundColor(resources.getColor(R.color.correctAnsMarker))
+                correctAnswerTV.visibility = View.GONE
+            }
+        }
     }
 }
