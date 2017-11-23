@@ -35,7 +35,11 @@ data class QuestionsData(
      * Multiple Select question
      */
     fun removeUserAnswer(answer: String) {
-        usersAnswers.remove(answer)
+        if (answerType == "TXT") {
+            usersAnswers.clear()
+        } else {
+            usersAnswers.remove(answer)
+        }
     }
 
     /**
@@ -55,6 +59,13 @@ data class QuestionsData(
      */
     fun isAnswerSelected(answer: String): Boolean {
         return usersAnswers.contains(answer)
+    }
+
+    /**
+     * Determine if this question has already been answered by the user
+     */
+    fun isAnswered(): Boolean {
+        return usersAnswers.isNotEmpty()
     }
 
     /**

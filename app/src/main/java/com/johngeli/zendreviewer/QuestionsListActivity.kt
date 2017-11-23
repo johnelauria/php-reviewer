@@ -1,5 +1,6 @@
 package com.johngeli.zendreviewer
 
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -38,6 +39,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
     private var selectedQuestion: QuestionsData? = null
     private var isSubmitted = false
     private var questionsIndex = mutableListOf<Int>()
+    private var answeredQuestionCnt = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,15 +88,15 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
     override fun onCheckedChanged(radio: RadioGroup?, id: Int) {
         val selectedRadio = findViewById<RadioButton>(id)
         if (selectedRadio != null) {
-            selectedQuestion?.addUserAnswer(selectedRadio.text.toString())
+            setAnswer(selectedRadio.text.toString(), true)
         }
     }
 
     override fun onCheckedChanged(checkbox: CompoundButton?, isChecked: Boolean) {
         if (isChecked) {
-            selectedQuestion?.addUserAnswer(checkbox?.text.toString())
+            setAnswer(checkbox?.text.toString(), true)
         } else {
-            selectedQuestion?.removeUserAnswer(checkbox?.text.toString())
+            setAnswer(checkbox?.text.toString(), false)
         }
     }
 
@@ -152,7 +154,8 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
 
         // If previous question had single text type, save the answer from EditText first.
         if (selectedQuestion?.answerType == "TXT") {
-            selectedQuestion?.addUserAnswer(answerET.text.toString())
+            val answer = answerET.text.toString()
+            setAnswer(answer, answer.isNotEmpty())
         }
         selectedQuestion = questionData
 
@@ -196,7 +199,6 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         answersRadioGrp.visibility = View.VISIBLE
         answersChkBxGrp.visibility = View.VISIBLE
         toggleNextPrevBtn(selectedQuestion!!.questionId)
-
     }
 
     /**
@@ -209,7 +211,12 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
 
         for (question in questionsList) {
             firstQuestionID = firstQuestionID ?: question.key
-            navView.menu.add(R.id.questionItemGroup, question.key, Menu.NONE, question.value.trimmedQuestion())
+            navView.menu.add(
+                    R.id.questionItemGroup,
+                    question.key,
+                    Menu.NONE,
+                    question.value.trimmedQuestion()
+            )
             questionsIndex.add(question.key)
         }
 
@@ -272,5 +279,34 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
                 correctAnswerTV.visibility = View.GONE
             }
         }
+    }
+
+    /**
+     * This is triggered when user selects / removes an answer. This then updates the icon in
+     * nav_view drawer bar, and the text on how many questions have been answered
+     *
+     * @param answer The answer selected/typed by user
+     * @param isAdded If true, the user has selected this answer. Otherwise, the answer is removed
+     * (emptied the text box or unchecked a checkbox)
+     */
+    private fun setAnswer(answer: String, isAdded: Boolean) {
+        val questionIndex = questionsIndex.indexOf(selectedQuestion!!.questionId)
+        var icon: Drawable? = null
+
+        if (isAdded) {
+            if (!selectedQuestion!!.isAnswered()) answeredQuestionCnt++
+            selectedQuestion!!.addUserAnswer(answer)
+            icon = resources.getDrawable(R.drawable.btn_check_buttonless_on)
+        } else {
+            if (selectedQuestion!!.isAnswered()) answeredQuestionCnt--
+            selectedQuestion!!.removeUserAnswer(answer)
+        }
+
+        nav_view.menu.getItem(questionIndex).icon = icon
+        navBodyText.text = resources.getString(
+                R.string.answerCounter,
+                answeredQuestionCnt,
+                questionsList.count()
+        )
     }
 }
