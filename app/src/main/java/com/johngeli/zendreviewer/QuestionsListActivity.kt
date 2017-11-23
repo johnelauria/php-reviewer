@@ -22,6 +22,8 @@ import com.johngeli.zendreviewer.database.Questions
 import kotlinx.android.synthetic.main.activity_questions_list.drawer_layout
 import kotlinx.android.synthetic.main.activity_questions_list.nav_view
 import kotlinx.android.synthetic.main.app_bar_questions_list.toolbar
+import kotlinx.android.synthetic.main.app_bar_questions_list.nextFab
+import kotlinx.android.synthetic.main.app_bar_questions_list.prevFab
 import kotlinx.android.synthetic.main.content_questions_list.correctAnswerTV
 import kotlinx.android.synthetic.main.content_questions_list.answersRadioGrp
 import kotlinx.android.synthetic.main.content_questions_list.answersChkBxGrp
@@ -35,6 +37,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
     private lateinit var answerET: EditText
     private var selectedQuestion: QuestionsData? = null
     private var isSubmitted = false
+    private var questionsIndex = mutableListOf<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +54,8 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+        nextFab.setOnClickListener { view -> nextQuestion() }
+        prevFab.setOnClickListener { view -> prevQuestion() }
         populateNavView(nav_view, intent.extras.getString("questionNum"), intent.extras.getString("questionType"))
     }
 
@@ -100,6 +105,43 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         return true
     }
 
+    /**
+     * Move to the next question
+     */
+    private fun nextQuestion() {
+        val nextQuestionIndex = questionsIndex.indexOf(selectedQuestion!!.questionId) + 1
+        val nextQuestionID = questionsList[questionsIndex[nextQuestionIndex]]!!.questionId
+
+        nav_view.menu.findItem(nextQuestionID).isChecked = true
+        displayQuestion(nextQuestionID)
+    }
+
+    /**
+     * Move to the previous question
+     */
+    private fun prevQuestion() {
+        val prevQuestionIndex = questionsIndex.indexOf(selectedQuestion!!.questionId) - 1
+        val prevQuestionID = questionsList[questionsIndex[prevQuestionIndex]]!!.questionId
+
+        nav_view.menu.findItem(prevQuestionID).isChecked = true
+        displayQuestion(prevQuestionID)
+    }
+
+    /**
+     * Sets the next and previous buttons visible or not depending if there is still an available
+     * next or previous question
+     */
+    private fun toggleNextPrevBtn(questionId: Int) {
+        val hasNextQuestion = questionsIndex.indexOf(questionId) < questionsIndex.size - 1
+        val hasPrevQuestion = questionsIndex.indexOf(questionId) > 0
+
+        nextFab.visibility = if (hasNextQuestion) View.VISIBLE else View.GONE
+        prevFab.visibility = if (hasPrevQuestion) View.VISIBLE else View.GONE
+    }
+
+    /**
+     * Displays the questions and the answer options (radio buttons, checkboxes or input text)
+     */
     private fun displayQuestion(questionId: Int) {
         val questionData = questionsList[questionId]!!
         // Setup question and clear all answer options / EditText
@@ -153,8 +195,13 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
 
         answersRadioGrp.visibility = View.VISIBLE
         answersChkBxGrp.visibility = View.VISIBLE
+        toggleNextPrevBtn(selectedQuestion!!.questionId)
+
     }
 
+    /**
+     * Populate the drawer navbar with list of questions
+     */
     private fun populateNavView(navView: NavigationView, questionNum: String, questionType: String) {
         val questionsDB = Questions(this)
         var firstQuestionID: Int? = null
@@ -163,6 +210,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         for (question in questionsList) {
             firstQuestionID = firstQuestionID ?: question.key
             navView.menu.add(R.id.questionItemGroup, question.key, Menu.NONE, question.value.trimmedQuestion())
+            questionsIndex.add(question.key)
         }
 
         navView.menu.setGroupCheckable(R.id.questionItemGroup, true, true)
@@ -171,6 +219,10 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
     }
 
     @Suppress("DEPRECATION")
+    /**
+     * This will format the text from the db to a more presentable formatted TextView which
+     * will be rendered in the mobile device
+     */
     private fun formatHTMLToAndroid(content: String): String {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Html.fromHtml(content, Html.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL).toString()
@@ -179,6 +231,9 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         }
     }
 
+    /**
+     * Calculate the total score then have it displayed. Also disables the answer options
+     */
     private fun displayResults(): Boolean {
         var score = 0
         val totalQuestions = questionsList.count()
@@ -203,7 +258,10 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         return true
     }
 
-    @Suppress("DEPRECATION")
+    /**
+     * Highlights the correct answers in green for radios and checkboxes. If EditText is shown,
+     * then show a text below it with the correct answer
+     */
     private fun markCorrectAnswers(view: View?, answer: String) {
         if (isSubmitted) {
             if (view is EditText) {
