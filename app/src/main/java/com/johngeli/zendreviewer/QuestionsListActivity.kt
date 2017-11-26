@@ -262,6 +262,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         answersChkBxGrp.visibility = View.GONE
         answerET.visibility = View.GONE
         isSubmitted = true
+        markCorrectNavs()
         return true
     }
 
@@ -290,23 +291,38 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
      * (emptied the text box or unchecked a checkbox)
      */
     private fun setAnswer(answer: String, isAdded: Boolean) {
-        val questionIndex = questionsIndex.indexOf(selectedQuestion!!.questionId)
-        var icon: Drawable? = null
+        if (!isSubmitted) {
+            val questionIndex = questionsIndex.indexOf(selectedQuestion!!.questionId)
+            var icon: Drawable? = null
 
-        if (isAdded) {
-            if (!selectedQuestion!!.isAnswered()) answeredQuestionCnt++
-            selectedQuestion!!.addUserAnswer(answer)
-            icon = resources.getDrawable(R.drawable.btn_check_buttonless_on)
-        } else {
-            if (selectedQuestion!!.isAnswered()) answeredQuestionCnt--
-            selectedQuestion!!.removeUserAnswer(answer)
+            if (isAdded) {
+                if (!selectedQuestion!!.isAnswered()) answeredQuestionCnt++
+                selectedQuestion!!.addUserAnswer(answer)
+                icon = resources.getDrawable(R.drawable.btn_radio_off_holo)
+            } else {
+                if (selectedQuestion!!.isAnswered()) answeredQuestionCnt--
+                selectedQuestion!!.removeUserAnswer(answer)
+            }
+
+            nav_view.menu.getItem(questionIndex).icon = icon
+            navBodyText.text = resources.getString(
+                    R.string.answerCounter,
+                    answeredQuestionCnt,
+                    questionsList.count()
+            )
         }
+    }
 
-        nav_view.menu.getItem(questionIndex).icon = icon
-        navBodyText.text = resources.getString(
-                R.string.answerCounter,
-                answeredQuestionCnt,
-                questionsList.count()
-        )
+    /**
+     * Marks the nav_view with check icon if the answer is correct. Cross icon otherwise
+     */
+    private fun markCorrectNavs() {
+        for (question in questionsIndex.withIndex()) {
+            nav_view.menu.getItem(question.index).icon = if (questionsList[question.value]!!.isCorrect) {
+                resources.getDrawable(R.drawable.btn_check_buttonless_on)
+            } else {
+                resources.getDrawable(R.drawable.ic_menu_close_clear_cancel)
+            }
+        }
     }
 }
