@@ -1,5 +1,7 @@
 package com.johngeli.zendreviewer.data
 
+import java.util.*
+
 data class QuestionsData(
         val questionId: Int,
         val question: String,
@@ -10,6 +12,8 @@ data class QuestionsData(
         private val usersAnswers: MutableList<String> = mutableListOf(),
         var isCorrect: Boolean = false
 ) {
+    private var randomisedAns = mutableListOf<String>()
+
     fun trimmedQuestion(): String {
         if (question.length > 35) {
             return question.substring(0, 35)
@@ -66,6 +70,41 @@ data class QuestionsData(
      */
     fun isAnswered(): Boolean {
         return usersAnswers.isNotEmpty()
+    }
+
+    /**
+     * Acquires the list of answer options in a randomised order, but ensuring that all correct answers
+     * are included
+     */
+    fun randomisedAnswers(): List<String> {
+        if (randomisedAns.count() > 0) {
+            return randomisedAns
+        }
+
+        if (correctAnswers.count() >= 5) {
+            Collections.shuffle(answerOptions)
+            return answerOptions
+        }
+
+        var incorrectAns = mutableListOf<String>()
+
+        for (answer in answerOptions) {
+            if (correctAnswers.contains(answer)) {
+                randomisedAns.add(answer)
+            } else {
+                incorrectAns.add(answer)
+            }
+        }
+
+        Collections.shuffle(incorrectAns)
+
+        if (answerOptions.count() > 5) {
+            incorrectAns =  incorrectAns.slice(0..(4 - randomisedAns.count())).toMutableList()
+        }
+
+        randomisedAns.addAll(incorrectAns)
+        Collections.shuffle(randomisedAns)
+        return randomisedAns
     }
 
     /**

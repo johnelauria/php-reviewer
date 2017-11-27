@@ -159,7 +159,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         }
         selectedQuestion = questionData
 
-        for (answer in questionData.answerOptions) {
+        for (answer in questionData.randomisedAnswers()) {
             var viewElement: View? = null
             when (questionData.answerType) {
                 "SS" -> {
