@@ -1,17 +1,14 @@
 package com.johngeli.zendreviewer
 
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
-import android.text.Html
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.TextView
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.CompoundButton
@@ -20,12 +17,14 @@ import android.widget.EditText
 import android.widget.CheckBox
 import com.johngeli.zendreviewer.data.QuestionsData
 import com.johngeli.zendreviewer.database.Questions
+import com.johngeli.zendreviewer.util.TextUtil
 import kotlinx.android.synthetic.main.activity_questions_list.drawer_layout
 import kotlinx.android.synthetic.main.activity_questions_list.nav_view
 import kotlinx.android.synthetic.main.app_bar_questions_list.toolbar
 import kotlinx.android.synthetic.main.app_bar_questions_list.nextFab
 import kotlinx.android.synthetic.main.app_bar_questions_list.prevFab
 import kotlinx.android.synthetic.main.content_questions_list.correctAnswerTV
+import kotlinx.android.synthetic.main.content_questions_list.questionTV
 import kotlinx.android.synthetic.main.content_questions_list.answersRadioGrp
 import kotlinx.android.synthetic.main.content_questions_list.answersChkBxGrp
 import kotlinx.android.synthetic.main.nav_header_questions_list.navHeaderText
@@ -33,7 +32,6 @@ import kotlinx.android.synthetic.main.nav_header_questions_list.navBodyText
 
 class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
         RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener {
-    private lateinit var questionTV: TextView
     private lateinit var questionsList: MutableMap<Int, QuestionsData>
     private lateinit var answerET: EditText
     private var selectedQuestion: QuestionsData? = null
@@ -46,7 +44,6 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         setContentView(R.layout.activity_questions_list)
         setSupportActionBar(toolbar)
 
-        questionTV = findViewById(R.id.questionTV)
         answerET = findViewById(R.id.answerET)
         answersRadioGrp.setOnCheckedChangeListener(this)
 
@@ -87,7 +84,14 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
 
     override fun onCheckedChanged(radio: RadioGroup?, id: Int) {
         val selectedRadio = findViewById<RadioButton>(id)
+        var radioCnt = 0
+
+        while (radioCnt < radio!!.childCount) {
+            radio.getChildAt(radioCnt++).setBackgroundColor(resources.getColor(R.color.colorBackground))
+        }
+
         if (selectedRadio != null) {
+            selectedRadio.setBackgroundColor(resources.getColor(R.color.colorPrimaryLight))
             setAnswer(selectedRadio.text.toString(), true)
         }
     }
@@ -146,8 +150,9 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
      */
     private fun displayQuestion(questionId: Int) {
         val questionData = questionsList[questionId]!!
+        val textUtil = TextUtil()
         // Setup question and clear all answer options / EditText
-        questionTV.text = formatHTMLToAndroid(questionData.question)
+        questionTV.setHtml(textUtil.formatHTMLToAndroid(questionData.question))
         answersRadioGrp.removeAllViews()
         answersChkBxGrp.removeAllViews()
         answerET.visibility = View.GONE
@@ -164,18 +169,19 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             when (questionData.answerType) {
                 "SS" -> {
                     viewElement = RadioButton(this)
-                    viewElement.text = answer
+                    viewElement.text = textUtil.formatAnswerOpts(answer)
                     viewElement.layoutParams = RadioGroup.LayoutParams(
                             RadioGroup.LayoutParams.MATCH_PARENT,
                             RadioGroup.LayoutParams.WRAP_CONTENT
                     )
+                    viewElement.setPadding(0, 0, 0, 30)
                     answersRadioGrp.addView(viewElement)
                     viewElement.isChecked = questionData.isAnswerSelected(answer)
                     viewElement.isEnabled = !isSubmitted
                 }
                 "MS" -> {
                     viewElement = CheckBox(this)
-                    viewElement.text = answer
+                    viewElement.text = textUtil.formatAnswerOpts(answer)
                     viewElement.layoutParams = LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT
@@ -223,19 +229,6 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         navView.menu.setGroupCheckable(R.id.questionItemGroup, true, true)
         navView.menu.getItem(0).isChecked = true
         displayQuestion(firstQuestionID!!)
-    }
-
-    @Suppress("DEPRECATION")
-    /**
-     * This will format the text from the db to a more presentable formatted TextView which
-     * will be rendered in the mobile device
-     */
-    private fun formatHTMLToAndroid(content: String): String {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Html.fromHtml(content, Html.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL).toString()
-        } else {
-            Html.fromHtml(content).toString()
-        }
     }
 
     /**

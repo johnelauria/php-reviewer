@@ -15,10 +15,13 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <TextView
+            <org.sufficientlysecure.htmltextview.HtmlTextView
                 android:id="@+id/questionTV"
-                android:textSize="23sp"
+                android:textAppearance="@android:style/TextAppearance.Medium"
                 android:layout_width="match_parent"
+                android:background="@drawable/text_line"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:padding="10sp"
                 android:layout_height="wrap_content" />
 
             <RadioGroup
