@@ -111,10 +111,10 @@ data class QuestionsData(
      * Compares the user's answer vs the correct answer, then update the "isCorrect" property
      */
     private fun checkAnswer() {
-        isCorrect = if (correctAnswers.count() == usersAnswers.count()) {
-            correctAnswers.containsAll(usersAnswers)
-        } else {
-            false
+        isCorrect = when {
+            answerType == "TXT" -> correctAnswers.first().equals(usersAnswers.first(), true)
+            correctAnswers.count() == usersAnswers.count() -> correctAnswers.containsAll(usersAnswers)
+            else -> false
         }
     }
 }
