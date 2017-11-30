@@ -16,7 +16,7 @@ class Questions(context: Context) : PhpReviewDb(context) {
      */
     fun getQuestionTypes(): MutableList<String> {
         open()
-        val result = mutableListOf<String>()
+        val result = mutableListOf("All")
         val cursor = database.query(
                 QUESTION_TYPES_TABLE,
                 listOf(questionTypeKey).toTypedArray(),
@@ -40,11 +40,19 @@ class Questions(context: Context) : PhpReviewDb(context) {
     fun getQuestions(questionType: String, questionNum: String): MutableMap<Int, QuestionsData> {
         open()
         val result = mutableMapOf<Int, QuestionsData>()
-        val questionsQuery = "SELECT q._id, q.question, q.answer_type_id, qt.question_type FROM questions q " +
-                "INNER JOIN question_types qt ON q.question_type_id = qt._id " +
-                "WHERE qt.question_type = ? ORDER BY RANDOM() LIMIT ?"
+        val bindParams = mutableListOf<String>()
+        val questionsQuery = StringBuilder("SELECT q._id, q.question, q.answer_type_id, qt.question_type FROM questions q")
+        questionsQuery.append(" INNER JOIN question_types qt ON q.question_type_id = qt._id")
 
-        val questionsCursor = database.rawQuery(questionsQuery, listOf(questionType, questionNum).toTypedArray())
+        if ("All" != questionType) {
+            questionsQuery.append(" WHERE qt.question_type = ?")
+            bindParams.add(questionType)
+        }
+
+        questionsQuery.append(" ORDER BY RANDOM() LIMIT ?")
+        bindParams.add(questionNum)
+
+        val questionsCursor = database.rawQuery(questionsQuery.toString(), bindParams.toTypedArray())
         questionsCursor.moveToFirst()
         val questionIds = mutableListOf<Int>()
 
