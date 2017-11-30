@@ -10,62 +10,64 @@
 
     <LinearLayout
         android:orientation="vertical"
+        android:weightSum="1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
+        <Space
+            android:layout_weight="0.2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
+
         <LinearLayout
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:baselineAligned="false">
-            <LinearLayout
-                android:layout_weight=".25"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:text="@string/category"
-                    android:textSize="20sp"
-                    android:gravity="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
+            <TextView
+                android:text="@string/category"
+                android:textSize="24sp"
+                android:textColor="@color/colorAccent"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-            <LinearLayout
-                android:layout_weight=".75"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content">
-                <Spinner
-                    android:id="@+id/categorySpinner"
-                    android:spinnerMode="dropdown"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+            <Spinner
+                android:id="@+id/categorySpinner"
+                android:spinnerMode="dropdown"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:background="@color/colorPrimaryLight"
+                android:textAlignment="center"
+                android:foregroundGravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </LinearLayout>
+
+        <Space
+            android:layout_weight="0.1"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp" />
 
         <LinearLayout
             android:baselineAligned="false"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_weight=".25"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:text="@string/numItems"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_weight=".75"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/questionNumET"
-                    android:inputType="number"
-                    android:hint="@string/enterNum"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+            <TextView
+                android:text="@string/numItems"
+                android:textSize="22sp"
+                android:gravity="center"
+                android:textColor="@color/colorAccent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/questionNumET"
+                android:inputType="number"
+                android:hint="@string/enterNum"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
 

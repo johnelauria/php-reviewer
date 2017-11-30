@@ -66,6 +66,8 @@ class MainActivity : AppCompatActivity(), TextWatcher {
         val questionNum = questionNumET.text.toString()
         if (questionNum.isNotEmpty() && Integer.parseInt(questionNum) > 0) {
             startQuizFab.visibility = View.VISIBLE
+        } else {
+            startQuizFab.visibility = View.GONE
         }
     }
 
