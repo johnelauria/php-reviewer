@@ -299,7 +299,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             if (isAdded) {
                 if (!selectedQuestion!!.isAnswered()) answeredQuestionCnt++
                 selectedQuestion!!.addUserAnswer(answer)
-                icon = resources.getDrawable(R.drawable.btn_radio_off_holo)
+                icon = resources.getDrawable(R.mipmap.btn_radio_off_holo)
             } else {
                 if (selectedQuestion!!.isAnswered()) answeredQuestionCnt--
                 selectedQuestion!!.removeUserAnswer(answer)
@@ -320,9 +320,9 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
     private fun markCorrectNavs() {
         for (question in questionsIndex.withIndex()) {
             nav_view.menu.getItem(question.index).icon = if (questionsList[question.value]!!.isCorrect) {
-                resources.getDrawable(R.drawable.btn_check_buttonless_on)
+                resources.getDrawable(R.mipmap.btn_check_buttonless_on)
             } else {
-                resources.getDrawable(R.drawable.ic_menu_close_clear_cancel)
+                resources.getDrawable(R.mipmap.ic_menu_close_clear_cancel)
             }
         }
     }
