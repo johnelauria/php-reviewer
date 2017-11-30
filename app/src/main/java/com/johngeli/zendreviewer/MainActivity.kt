@@ -15,7 +15,6 @@ import com.johngeli.zendreviewer.database.Questions
 
 import kotlinx.android.synthetic.main.activity_main.startQuizFab
 import kotlinx.android.synthetic.main.activity_main.toolbar
-import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity(), TextWatcher {
     private lateinit var questionNumET: EditText
