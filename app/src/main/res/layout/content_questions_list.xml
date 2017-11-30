@@ -24,16 +24,50 @@
                 android:padding="10sp"
                 android:layout_height="wrap_content" />
 
-            <RadioGroup
-                android:id="@+id/answersRadioGrp"
+            <LinearLayout
+                android:orientation="horizontal"
+                android:weightSum="1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content">
+                <Space
+                    android:layout_weight="0.025"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+
+                <RadioGroup
+                    android:id="@+id/answersRadioGrp"
+                    android:layout_weight="0.95"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+
+                <Space
+                    android:layout_weight="0.025"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
 
             <LinearLayout
-                android:orientation="vertical"
-                android:id="@+id/answersChkBxGrp"
+                android:orientation="horizontal"
+                android:weightSum="1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content">
+                <Space
+                    android:layout_weight="0.025"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/answersChkBxGrp"
+                    android:layout_weight="0.95"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+
+                <Space
+                    android:layout_weight="0.025"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
 
             <EditText
                 android:visibility="gone"

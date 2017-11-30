@@ -98,14 +98,16 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
 
     override fun onCheckedChanged(checkbox: CompoundButton?, isChecked: Boolean) {
         if (isChecked) {
+            checkbox?.setBackgroundColor(resources.getColor(R.color.colorPrimaryLight))
             setAnswer(checkbox?.text.toString(), true)
         } else {
+            checkbox?.setBackgroundColor(resources.getColor(R.color.colorBackground))
             setAnswer(checkbox?.text.toString(), false)
         }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        displayQuestion(item.itemId)
+        showQuestionAndAns(item.itemId)
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
@@ -119,7 +121,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         val nextQuestionID = questionsList[questionsIndex[nextQuestionIndex]]!!.questionId
 
         nav_view.menu.findItem(nextQuestionID).isChecked = true
-        displayQuestion(nextQuestionID)
+        showQuestionAndAns(nextQuestionID)
     }
 
     /**
@@ -130,7 +132,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         val prevQuestionID = questionsList[questionsIndex[prevQuestionIndex]]!!.questionId
 
         nav_view.menu.findItem(prevQuestionID).isChecked = true
-        displayQuestion(prevQuestionID)
+        showQuestionAndAns(prevQuestionID)
     }
 
     /**
@@ -148,7 +150,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
     /**
      * Displays the questions and the answer options (radio buttons, checkboxes or input text)
      */
-    private fun displayQuestion(questionId: Int) {
+    private fun showQuestionAndAns(questionId: Int) {
         val questionData = questionsList[questionId]!!
         val textUtil = TextUtil()
         // Setup question and clear all answer options / EditText
@@ -174,7 +176,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
                             RadioGroup.LayoutParams.MATCH_PARENT,
                             RadioGroup.LayoutParams.WRAP_CONTENT
                     )
-                    viewElement.setPadding(0, 0, 0, 30)
+                    viewElement.setPadding(20, 0, 0, 30)
                     answersRadioGrp.addView(viewElement)
                     viewElement.isChecked = questionData.isAnswerSelected(answer)
                     viewElement.isEnabled = !isSubmitted
@@ -186,7 +188,13 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
                             LinearLayout.LayoutParams.MATCH_PARENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT
                     )
+                    viewElement.setPadding(20, 0, 0, 30)
                     answersChkBxGrp.addView(viewElement)
+
+                    if (questionData.isAnswerSelected(answer)) {
+                        viewElement.setBackgroundColor(resources.getColor(R.color.colorPrimaryLight))
+                    }
+
                     viewElement.isChecked = questionData.isAnswerSelected(answer)
                     viewElement.isEnabled = !isSubmitted
                     viewElement.setOnCheckedChangeListener(this)
@@ -228,7 +236,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
 
         navView.menu.setGroupCheckable(R.id.questionItemGroup, true, true)
         navView.menu.getItem(0).isChecked = true
-        displayQuestion(firstQuestionID!!)
+        showQuestionAndAns(firstQuestionID!!)
     }
 
     /**
