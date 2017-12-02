@@ -1,5 +1,6 @@
 package com.johngeli.zendreviewer
 
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.CompoundButton
@@ -23,6 +25,7 @@ import kotlinx.android.synthetic.main.activity_questions_list.nav_view
 import kotlinx.android.synthetic.main.app_bar_questions_list.toolbar
 import kotlinx.android.synthetic.main.app_bar_questions_list.nextFab
 import kotlinx.android.synthetic.main.app_bar_questions_list.prevFab
+import kotlinx.android.synthetic.main.app_bar_questions_list.submitFab
 import kotlinx.android.synthetic.main.content_questions_list.correctAnswerTV
 import kotlinx.android.synthetic.main.content_questions_list.questionTV
 import kotlinx.android.synthetic.main.content_questions_list.answersRadioGrp
@@ -55,6 +58,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         nav_view.setNavigationItemSelectedListener(this)
         nextFab.setOnClickListener { view -> nextQuestion() }
         prevFab.setOnClickListener { view -> prevQuestion() }
+        submitFab.setOnClickListener { view -> submitQuiz() }
         populateNavView(nav_view, intent.extras.getString("questionNum"), intent.extras.getString("questionType"))
     }
 
@@ -77,7 +81,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.submit_quiz -> displayResults()
+            R.id.submit_quiz -> submitQuiz()
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -139,12 +143,19 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
      * Sets the next and previous buttons visible or not depending if there is still an available
      * next or previous question
      */
-    private fun toggleNextPrevBtn(questionId: Int) {
+    private fun toggleNextPrevSubmit(questionId: Int) {
         val hasNextQuestion = questionsIndex.indexOf(questionId) < questionsIndex.size - 1
         val hasPrevQuestion = questionsIndex.indexOf(questionId) > 0
+        val lastQuestion = questionsList[questionsIndex.last()]
 
         nextFab.visibility = if (hasNextQuestion) View.VISIBLE else View.GONE
         prevFab.visibility = if (hasPrevQuestion) View.VISIBLE else View.GONE
+
+        submitFab.visibility = if (!isSubmitted && !hasNextQuestion && lastQuestion!!.isAnswered()) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
     }
 
     /**
@@ -153,11 +164,14 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
     private fun showQuestionAndAns(questionId: Int) {
         val questionData = questionsList[questionId]!!
         val textUtil = TextUtil()
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
         // Setup question and clear all answer options / EditText
         questionTV.setHtml(textUtil.formatHTMLToAndroid(questionData.question))
         answersRadioGrp.removeAllViews()
         answersChkBxGrp.removeAllViews()
         answerET.visibility = View.GONE
+        imm.hideSoftInputFromWindow(answerET.windowToken, 0)
 
         // If previous question had single text type, save the answer from EditText first.
         if (selectedQuestion?.answerType == "TXT") {
@@ -212,7 +226,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
 
         answersRadioGrp.visibility = View.VISIBLE
         answersChkBxGrp.visibility = View.VISIBLE
-        toggleNextPrevBtn(selectedQuestion!!.questionId)
+        toggleNextPrevSubmit(selectedQuestion!!.questionId)
     }
 
     /**
@@ -242,7 +256,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
     /**
      * Calculate the total score then have it displayed. Also disables the answer options
      */
-    private fun displayResults(): Boolean {
+    private fun submitQuiz(): Boolean {
         var score = 0
         val totalQuestions = questionsList.count()
 
@@ -261,6 +275,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         navBodyText.text = resources.getString(R.string.yourScore, score, totalQuestions)
         answersRadioGrp.visibility = View.GONE
         answersChkBxGrp.visibility = View.GONE
+        submitFab.visibility = View.GONE
         answerET.visibility = View.GONE
         isSubmitted = true
         markCorrectNavs()
@@ -311,6 +326,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
                     answeredQuestionCnt,
                     questionsList.count()
             )
+            toggleNextPrevSubmit(selectedQuestion!!.questionId)
         }
     }
 
