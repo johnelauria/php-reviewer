@@ -2,6 +2,7 @@ package com.johngeli.zendreviewer.database
 
 import android.content.Context
 import com.johngeli.zendreviewer.data.QuestionsData
+import com.johngeli.zendreviewer.util.TextUtil
 
 const val QUESTION_TYPES_TABLE = "question_types"
 
@@ -78,6 +79,7 @@ class Questions(context: Context) : PhpReviewDb(context) {
     }
 
     private fun attachAnswersData(questionIds: MutableList<Int>, result: MutableMap<Int, QuestionsData>) {
+        val textUtil = TextUtil()
         val answersCursor = database.rawQuery(
                 "SELECT * FROM answers WHERE question_id IN (${questionIds.joinToString()})",
                 null
@@ -89,10 +91,10 @@ class Questions(context: Context) : PhpReviewDb(context) {
             val answer = answersCursor.getString(answersCursor.getColumnIndex("answer"))
 
             if (answersCursor.getInt(answersCursor.getColumnIndex("is_correct")) == 1) {
-                result[questionId]?.correctAnswers?.add(answer)
+                result[questionId]?.correctAnswers?.add(textUtil.formatAnswerOpts(answer))
             }
 
-            result[questionId]?.answerOptions?.add(answer)
+            result[questionId]?.answerOptions?.add(textUtil.formatAnswerOpts(answer))
             answersCursor.moveToNext()
         }
 

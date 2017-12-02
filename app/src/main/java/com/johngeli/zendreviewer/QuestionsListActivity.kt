@@ -185,7 +185,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             when (questionData.answerType) {
                 "SS" -> {
                     viewElement = RadioButton(this)
-                    viewElement.text = textUtil.formatAnswerOpts(answer)
+                    viewElement.text = answer
                     viewElement.layoutParams = RadioGroup.LayoutParams(
                             RadioGroup.LayoutParams.MATCH_PARENT,
                             RadioGroup.LayoutParams.WRAP_CONTENT
@@ -197,7 +197,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
                 }
                 "MS" -> {
                     viewElement = CheckBox(this)
-                    viewElement.text = textUtil.formatAnswerOpts(answer)
+                    viewElement.text = answer
                     viewElement.layoutParams = LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT
