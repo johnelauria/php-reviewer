@@ -86,12 +86,14 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         }
     }
 
-    override fun onCheckedChanged(radio: RadioGroup?, id: Int) {
+    override fun onCheckedChanged(radioGrp: RadioGroup?, id: Int) {
         val selectedRadio = findViewById<RadioButton>(id)
         var radioCnt = 0
 
-        while (radioCnt < radio!!.childCount) {
-            radio.getChildAt(radioCnt++).setBackgroundColor(resources.getColor(R.color.colorBackground))
+        while (radioCnt < radioGrp!!.childCount) {
+            val radio = radioGrp.getChildAt(radioCnt++) as RadioButton
+            radio.setBackgroundColor(resources.getColor(R.color.colorBackground))
+            markCorrectAnswers(radio, radio.text.toString())
         }
 
         if (selectedRadio != null) {
@@ -108,6 +110,8 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             checkbox?.setBackgroundColor(resources.getColor(R.color.colorBackground))
             setAnswer(checkbox?.text.toString(), false)
         }
+
+        markCorrectAnswers(checkbox, checkbox?.text.toString())
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
