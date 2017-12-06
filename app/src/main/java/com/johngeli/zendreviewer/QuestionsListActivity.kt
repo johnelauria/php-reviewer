@@ -1,9 +1,12 @@
 package com.johngeli.zendreviewer
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.design.widget.NavigationView
+import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -13,13 +16,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.CompoundButton
-import android.widget.LinearLayout
-import android.widget.EditText
-import android.widget.CheckBox
-import android.widget.TextView
+import android.widget.*
 import com.johngeli.zendreviewer.data.QuestionsData
 import com.johngeli.zendreviewer.database.Questions
 import com.johngeli.zendreviewer.util.TextUtil
@@ -70,7 +67,13 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
         } else {
-            super.onBackPressed()
+            val alert = AlertDialog.Builder(this)
+            alert.setMessage("Are you sure you want to leave the quiz?")
+            alert.setPositiveButton("yes", { _: DialogInterface, _: Int ->
+                super.onBackPressed()
+            })
+            alert.setNegativeButton("No", null)
+            alert.show()
         }
     }
 
