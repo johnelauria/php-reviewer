@@ -24,6 +24,7 @@
         <activity
             android:name=".QuestionsListActivity"
             android:label="@string/title_activity_questions_list"
+            android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.QUESTIONS_LIST" />

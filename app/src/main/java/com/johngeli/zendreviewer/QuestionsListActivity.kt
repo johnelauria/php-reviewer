@@ -6,7 +6,6 @@ import android.content.DialogInterface
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.design.widget.NavigationView
-import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -28,6 +27,7 @@ import kotlinx.android.synthetic.main.app_bar_questions_list.prevFab
 import kotlinx.android.synthetic.main.app_bar_questions_list.submitFab
 import kotlinx.android.synthetic.main.content_questions_list.correctAnswerTV
 import kotlinx.android.synthetic.main.content_questions_list.questionTV
+import kotlinx.android.synthetic.main.content_questions_list.answerET
 import kotlinx.android.synthetic.main.content_questions_list.answersRadioGrp
 import kotlinx.android.synthetic.main.content_questions_list.answersChkBxGrp
 import kotlinx.android.synthetic.main.nav_header_questions_list.navHeaderText
@@ -36,7 +36,6 @@ import kotlinx.android.synthetic.main.nav_header_questions_list.navBodyText
 class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
         RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener, TextWatcher {
     private lateinit var questionsList: MutableMap<Int, QuestionsData>
-    private lateinit var answerET: EditText
     private var selectedQuestion: QuestionsData? = null
     private var isSubmitted = false
     private var questionsIndex = mutableListOf<Int>()
@@ -47,14 +46,12 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         setContentView(R.layout.activity_questions_list)
         setSupportActionBar(toolbar)
 
-        answerET = findViewById(R.id.answerET)
-        answersRadioGrp.setOnCheckedChangeListener(this)
-
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
+        answersRadioGrp.setOnCheckedChangeListener(this)
         nav_view.setNavigationItemSelectedListener(this)
         nextFab.setOnClickListener { view -> nextQuestion() }
         prevFab.setOnClickListener { view -> prevQuestion() }
