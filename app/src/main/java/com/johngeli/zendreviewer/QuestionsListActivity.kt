@@ -7,6 +7,8 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -17,6 +19,7 @@ import android.widget.CompoundButton
 import android.widget.LinearLayout
 import android.widget.EditText
 import android.widget.CheckBox
+import android.widget.TextView
 import com.johngeli.zendreviewer.data.QuestionsData
 import com.johngeli.zendreviewer.database.Questions
 import com.johngeli.zendreviewer.util.TextUtil
@@ -34,7 +37,7 @@ import kotlinx.android.synthetic.main.nav_header_questions_list.navHeaderText
 import kotlinx.android.synthetic.main.nav_header_questions_list.navBodyText
 
 class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-        RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener {
+        RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener, TextWatcher {
     private lateinit var questionsList: MutableMap<Int, QuestionsData>
     private lateinit var answerET: EditText
     private var selectedQuestion: QuestionsData? = null
@@ -59,6 +62,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         nextFab.setOnClickListener { view -> nextQuestion() }
         prevFab.setOnClickListener { view -> prevQuestion() }
         submitFab.setOnClickListener { view -> submitQuiz() }
+        answerET.addTextChangedListener(this)
         populateNavView(nav_view, intent.extras.getString("questionNum"), intent.extras.getString("questionType"))
     }
 
@@ -116,9 +120,22 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         showQuestionAndAns(item.itemId)
-
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    override fun afterTextChanged(p0: Editable?) {
+        val etContent = answerET.text
+
+        if (navBodyText is TextView) {
+            setAnswer(etContent.toString(), etContent.isNotEmpty())
+        }
+    }
+
+    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+    }
+
+    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
     }
 
     /**
@@ -176,12 +193,6 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         answersChkBxGrp.removeAllViews()
         answerET.visibility = View.GONE
         imm.hideSoftInputFromWindow(answerET.windowToken, 0)
-
-        // If previous question had single text type, save the answer from EditText first.
-        if (selectedQuestion?.answerType == "TXT") {
-            val answer = answerET.text.toString()
-            setAnswer(answer, answer.isNotEmpty())
-        }
         selectedQuestion = questionData
 
         for (answer in questionData.randomisedAnswers()) {
