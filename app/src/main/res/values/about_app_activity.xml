@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="about_label">About</string>
+    <string name="about_header">About this app</string>
+    <string name="about_content">
+        \tThis application serves as a practice exam to help anyone who are about to take the Zend
+        PHP Certification. A total of 900+ questions are available, ranging from topics in PHP5 to
+        PHP7.1.
+        \n\n\tJust like the real exam, questions are always provided in random order, so that when
+        re-taking the exam, a different set of questions are provided for you. Answer options are
+        also randomised to make sure you understand the correct answer rather than the order of
+        answers during the next time you see the question again.
+        \n\n\tWe believe that one of the most effective ways to increase the chances of passing
+        the exam is to learn from your mistakes in practice exams, just like this one! But your
+        best friend for this will always be php.net.
+    </string>
+    <string name="about_dev_1">Judith Angeli Yu</string>
+    <string name="about_dev_2">John Maenard Elauria</string>
+</resources>

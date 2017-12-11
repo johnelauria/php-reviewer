@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.johngeli.zendreviewer.AboutAppActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:weightSum="1"
+            android:layout_weight="0.2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <Space
+                android:layout_weight="0.025"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_weight="0.95"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="@string/about_header"
+                    android:textSize="30sp"
+                    android:textColor="@color/colorAccent"
+                    android:background="@drawable/text_line_purple"
+                    android:paddingBottom="10sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_marginTop="20sp"
+                    android:layout_marginBottom="40sp"
+                    android:textSize="16sp"
+                    android:text="@string/about_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:src="@drawable/zce_2017"
+                        android:layout_width="70sp"
+                        android:layout_height="70sp" />
+
+                    <TextView
+                        android:layout_marginStart="25sp"
+                        android:layout_marginLeft="25sp"
+                        android:textSize="20sp"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/about_dev_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="25sp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:src="@drawable/zcpe"
+                        android:layout_width="70sp"
+                        android:layout_height="70sp" />
+
+                    <TextView
+                        android:layout_marginStart="25sp"
+                        android:layout_marginLeft="25sp"
+                        android:textSize="20sp"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/about_dev_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <Space
+                android:layout_weight="0.025"
+
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>
