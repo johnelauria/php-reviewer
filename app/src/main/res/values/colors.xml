@@ -6,7 +6,7 @@
     <color name="colorAccent">#793862</color>
     <color name="colorDark">#CCCCCC</color>
     <color name="correctAnsTxt">#00760d</color>
-    <color name="correctAnsMarker">#98ff9f</color>
+    <color name="correctAnsMarker">#c8e9c1</color>
     <color name="codeBg">#2B2B2B</color>
     <color name="colorBackground">#FAFAFA</color>
 </resources>
