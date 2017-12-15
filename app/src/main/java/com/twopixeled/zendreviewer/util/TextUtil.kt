@@ -1,4 +1,4 @@
-package com.johngeli.zendreviewer.util
+package com.twopixeled.zendreviewer.util
 
 /**
  * Utility class for formatting texts

@@ -1,4 +1,4 @@
-package com.johngeli.zendreviewer
+package com.twopixeled.zendreviewer
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,7 +11,7 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
-import com.johngeli.zendreviewer.database.Questions
+import com.twopixeled.zendreviewer.database.Questions
 
 import kotlinx.android.synthetic.main.activity_main.startQuizFab
 import kotlinx.android.synthetic.main.activity_main.toolbar

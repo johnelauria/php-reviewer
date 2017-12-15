@@ -1,4 +1,4 @@
-package com.johngeli.zendreviewer.database
+package com.twopixeled.zendreviewer.database
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -41,7 +41,11 @@ abstract class PhpReviewDb(ctx: Context) : SQLiteOpenHelper(ctx, DB_NAME, null, 
             checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY)
 
         } catch (e: SQLiteException) {
-            Toast.makeText(context, "Problem whilst checking database", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                    context,
+                    "First time launch detected. Questions database installed.",
+                    Toast.LENGTH_SHORT
+            ).show()
         }
 
         if (checkDB != null) {
