@@ -53,9 +53,9 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
 
         answersRadioGrp.setOnCheckedChangeListener(this)
         nav_view.setNavigationItemSelectedListener(this)
-        nextFab.setOnClickListener { view -> nextQuestion() }
-        prevFab.setOnClickListener { view -> prevQuestion() }
-        submitFab.setOnClickListener { view -> submitQuiz() }
+        nextFab.setOnClickListener { _ -> nextQuestion() }
+        prevFab.setOnClickListener { _ -> prevQuestion() }
+        submitFab.setOnClickListener { _ -> submitQuiz() }
         answerET.addTextChangedListener(this)
         populateNavView(nav_view, intent.extras.getString("questionNum"), intent.extras.getString("questionType"))
     }
