@@ -14,6 +14,10 @@
         chances of passing the exam is to learn from your mistakes in practice exams, just like this
         one! But your best friend for this will always be php.net.
     </string>
-    <string name="about_dev_1">Judith Angeli Yu</string>
-    <string name="about_dev_2">John Maenard Elauria</string>
+    <string name="about_dev_1">
+        <a href="http://www.zend.com/en/yellow-pages/ZEND029984">Judith Angeli Yu</a>
+    </string>
+    <string name="about_dev_2">
+        <a href="http://www.zend.com/en/yellow-pages/ZEND026730">John Maenard Elauria</a>
+    </string>
 </resources>

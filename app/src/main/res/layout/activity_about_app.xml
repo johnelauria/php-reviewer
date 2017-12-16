@@ -10,9 +10,8 @@
         android:layout_height="match_parent">
         <LinearLayout
             android:weightSum="1"
-            android:layout_weight="0.2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
             <Space
                 android:layout_weight="0.025"
                 android:layout_width="0dp"
@@ -34,50 +33,43 @@
 
                 <TextView
                     android:layout_marginTop="20sp"
-                    android:layout_marginBottom="40sp"
+                    android:layout_marginBottom="20sp"
+                    android:paddingBottom="20sp"
                     android:textSize="16sp"
+                    android:background="@drawable/text_line"
                     android:text="@string/about_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <LinearLayout
+                    android:weightSum="2"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                    <ImageView
-                        android:src="@drawable/zce_2017"
-                        android:layout_width="70sp"
-                        android:layout_height="70sp" />
 
                     <TextView
-                        android:layout_marginStart="25sp"
-                        android:layout_marginLeft="25sp"
-                        android:textSize="20sp"
+                        android:id="@+id/dev2TV"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:gravity="start"
+                        android:textColor="@color/colorAccent"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/about_dev_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/dev1TV"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:gravity="end"
+                        android:textColor="@color/colorAccent"
                         android:layout_gravity="center_vertical"
                         android:text="@string/about_dev_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_marginTop="25sp"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <ImageView
-                        android:src="@drawable/zcpe"
-                        android:layout_width="70sp"
-                        android:layout_height="70sp" />
-
-                    <TextView
-                        android:layout_marginStart="25sp"
-                        android:layout_marginLeft="25sp"
-                        android:textSize="20sp"
-                        android:layout_gravity="center_vertical"
-                        android:text="@string/about_dev_2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
             </LinearLayout>
 
             <Space
