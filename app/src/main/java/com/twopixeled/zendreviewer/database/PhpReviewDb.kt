@@ -7,6 +7,7 @@ import java.io.FileOutputStream
 import java.io.IOException
 import android.database.sqlite.SQLiteException
 import android.widget.Toast
+import java.io.File
 
 
 const val DB_NAME = "php_review"
@@ -63,17 +64,21 @@ abstract class PhpReviewDb(ctx: Context) : SQLiteOpenHelper(ctx, DB_NAME, null, 
     private fun copyDataBase() {
         val myInput = context.assets.open("$DB_NAME.db")
         val outFileName = dbFile
-        val myOutput = FileOutputStream(outFileName)
         val buffer = ByteArray(1024)
         var length = myInput.read(buffer)
+        val outputDB: FileOutputStream
+        val dbDir = dbFile.replace("/$DB_NAME", "")
+
+        File(dbDir).mkdir()
+        outputDB = FileOutputStream(outFileName)
 
         while (length > 0) {
-            myOutput.write(buffer, 0, length)
+            outputDB.write(buffer, 0, length)
             length = myInput.read(buffer)
         }
 
-        myOutput.flush()
-        myOutput.close()
+        outputDB.flush()
+        outputDB.close()
         myInput.close()
     }
 

@@ -63,6 +63,7 @@
             <EditText
                 android:id="@+id/questionNumET"
                 android:inputType="number"
+                android:maxLength="4"
                 android:hint="@string/enterNum"
                 android:layout_gravity="center"
                 android:textAlignment="center"
