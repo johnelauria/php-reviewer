@@ -30,8 +30,6 @@ import kotlinx.android.synthetic.main.content_questions_list.questionTV
 import kotlinx.android.synthetic.main.content_questions_list.answerET
 import kotlinx.android.synthetic.main.content_questions_list.answersRadioGrp
 import kotlinx.android.synthetic.main.content_questions_list.answersChkBxGrp
-import kotlinx.android.synthetic.main.nav_header_questions_list.navHeaderText
-import kotlinx.android.synthetic.main.nav_header_questions_list.navBodyText
 
 class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
         RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener, TextWatcher {
@@ -126,10 +124,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
 
     override fun afterTextChanged(p0: Editable?) {
         val etContent = answerET.text
-
-        if (navBodyText is TextView) {
-            setAnswer(etContent.toString(), etContent.isNotEmpty())
-        }
+        setAnswer(etContent.toString(), etContent.isNotEmpty())
     }
 
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -274,6 +269,8 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
     private fun submitQuiz(): Boolean {
         var score = 0
         val totalQuestions = questionsList.count()
+        val navHeaderText: TextView = nav_view.getHeaderView(0).findViewById(R.id.navHeaderText)
+        val navBodyText: TextView = nav_view.getHeaderView(0).findViewById(R.id.navBodyText)
 
         for (questionData in questionsList) {
             if (questionData.value.isCorrect) score++
@@ -324,6 +321,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
     private fun setAnswer(answer: String, isAdded: Boolean) {
         if (!isSubmitted) {
             val questionIndex = questionsIndex.indexOf(selectedQuestion!!.questionId)
+            val navBodyText: TextView = nav_view.getHeaderView(0).findViewById(R.id.navBodyText)
             var icon: Drawable? = null
 
             if (isAdded) {
