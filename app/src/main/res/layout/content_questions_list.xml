@@ -8,86 +8,100 @@
     tools:context=".QuestionsListActivity"
     tools:showIn="@layout/app_bar_questions_list">
 
-    <ScrollView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <LinearLayout
-            android:orientation="vertical"
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/questionsAdView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            ads:adSize="SMART_BANNER"
+            ads:adUnitId="ca-app-pub-8537542711636630/1941281648" />
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <org.sufficientlysecure.htmltextview.HtmlTextView
-                android:id="@+id/questionTV"
-                android:textAppearance="@android:style/TextAppearance.Medium"
-                android:layout_width="match_parent"
-                android:background="@drawable/text_line"
-                android:layout_marginBottom="@dimen/activity_horizontal_margin"
-                android:padding="10sp"
-                android:layout_height="wrap_content" />
-
+            android:layout_height="match_parent">
             <LinearLayout
-                android:orientation="horizontal"
-                android:weightSum="1"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <Space
-                    android:layout_weight="0.025"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent" />
-
-                <RadioGroup
-                    android:id="@+id/answersRadioGrp"
-                    android:layout_weight="0.95"
-                    android:layout_width="0dp"
+                <org.sufficientlysecure.htmltextview.HtmlTextView
+                    android:id="@+id/questionTV"
+                    android:textAppearance="@android:style/TextAppearance.Medium"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/text_line"
+                    android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                    android:padding="10sp"
                     android:layout_height="wrap_content" />
-
-                <Space
-                    android:layout_weight="0.025"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:weightSum="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <Space
-                    android:layout_weight="0.025"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent" />
 
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:id="@+id/answersChkBxGrp"
-                    android:layout_weight="0.95"
-                    android:layout_width="0dp"
+                    android:orientation="horizontal"
+                    android:weightSum="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <Space
+                        android:layout_weight="0.025"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent" />
+
+                    <RadioGroup
+                        android:id="@+id/answersRadioGrp"
+                        android:layout_weight="0.95"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content" />
+
+                    <Space
+                        android:layout_weight="0.025"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:weightSum="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <Space
+                        android:layout_weight="0.025"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent" />
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:id="@+id/answersChkBxGrp"
+                        android:layout_weight="0.95"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content" />
+
+                    <Space
+                        android:layout_weight="0.025"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+
+                <EditText
+                    android:visibility="gone"
+                    android:hint="@string/questionETHint"
+                    android:id="@+id/answerET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/correctAnswerTV"
+                    android:textSize="18sp"
+                    android:visibility="gone"
+                    android:textColor="@color/correctAnsTxt"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
                 <Space
-                    android:layout_weight="0.025"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent" />
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp" />
             </LinearLayout>
-
-            <EditText
-                android:visibility="gone"
-                android:hint="@string/questionETHint"
-                android:id="@+id/answerET"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/correctAnswerTV"
-                android:textSize="18sp"
-                android:visibility="gone"
-                android:textColor="@color/correctAnsTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="60dp" />
-        </LinearLayout>
-    </ScrollView>
+        </ScrollView>
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

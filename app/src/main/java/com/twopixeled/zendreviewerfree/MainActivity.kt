@@ -11,10 +11,13 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
+import com.google.android.gms.ads.MobileAds
 import com.twopixeled.zendreviewerfree.database.Questions
+import com.twopixeled.zendreviewerfree.util.AdMobUtil
 
 import kotlinx.android.synthetic.main.activity_main.startQuizFab
 import kotlinx.android.synthetic.main.activity_main.toolbar
+import kotlinx.android.synthetic.main.content_main.mainAdView
 
 class MainActivity : AppCompatActivity(), TextWatcher {
     private lateinit var questionNumET: EditText
@@ -23,6 +26,7 @@ class MainActivity : AppCompatActivity(), TextWatcher {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        MobileAds.initialize(this, "ca-app-pub-8537542711636630~3659302397")
         questionNumET = findViewById(R.id.questionNumET)
         val categorySpinner = findViewById<Spinner>(R.id.categorySpinner)
 
@@ -33,8 +37,8 @@ class MainActivity : AppCompatActivity(), TextWatcher {
             startActivity(questionsListIntent)
         }
         questionNumET.addTextChangedListener(this)
-
         populateCategories()
+        mainAdView.loadAd(AdMobUtil().buildAdRequest())
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

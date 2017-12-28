@@ -18,6 +18,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.twopixeled.zendreviewerfree.data.QuestionsData
 import com.twopixeled.zendreviewerfree.database.Questions
+import com.twopixeled.zendreviewerfree.util.AdMobUtil
 import com.twopixeled.zendreviewerfree.util.TextUtil
 import kotlinx.android.synthetic.main.activity_questions_list.drawer_layout
 import kotlinx.android.synthetic.main.activity_questions_list.nav_view
@@ -30,6 +31,7 @@ import kotlinx.android.synthetic.main.content_questions_list.questionTV
 import kotlinx.android.synthetic.main.content_questions_list.answerET
 import kotlinx.android.synthetic.main.content_questions_list.answersRadioGrp
 import kotlinx.android.synthetic.main.content_questions_list.answersChkBxGrp
+import kotlinx.android.synthetic.main.content_questions_list.questionsAdView
 
 class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
         RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener, TextWatcher {
@@ -56,6 +58,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         submitFab.setOnClickListener { _ -> submitQuiz() }
         answerET.addTextChangedListener(this)
         populateNavView(nav_view, intent.extras.getString("questionNum"), intent.extras.getString("questionType"))
+        questionsAdView.loadAd(AdMobUtil().buildAdRequest())
     }
 
     override fun onBackPressed() {
