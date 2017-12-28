@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="unlockBtnTxt">Watch Video</string>
+    <string name="unlockMsgHeader">Unlock more questions</string>
+    <string name="unlockMsgBody">
+        \tThank you for using the free version of our app! Unlock 15 more questions by clicking the
+        button below to watch video ads. Additional questions will be unlocked after the video
+        finishes.
+    </string>
+</resources>

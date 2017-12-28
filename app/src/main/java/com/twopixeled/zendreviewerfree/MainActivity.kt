@@ -1,6 +1,7 @@
 package com.twopixeled.zendreviewerfree
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
@@ -51,6 +52,18 @@ class MainActivity : AppCompatActivity(), TextWatcher {
         return when (item.itemId) {
             R.id.action_about -> {
                 startActivity(Intent("android.intent.action.ABOUT_APP_FREE"))
+                return true
+            }
+            R.id.action_unlock_questions -> {
+                startActivity(Intent("android.intent.action.UNLOCK_QUESTIONS_FREE"))
+                return true
+            }
+            R.id.action_buy_full_app -> {
+                val browserIntent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://play.google.com/store/apps/details?id=com.twopixeled.zendreviewer")
+                )
+                startActivity(browserIntent)
                 return true
             }
             else -> super.onOptionsItemSelected(item)

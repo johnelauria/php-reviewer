@@ -2,6 +2,7 @@ package com.twopixeled.zendreviewerfree.database
 
 import android.content.Context
 import com.twopixeled.zendreviewerfree.data.QuestionsData
+import com.twopixeled.zendreviewerfree.util.AppPreferenceUtil
 import com.twopixeled.zendreviewerfree.util.TextUtil
 
 const val QUESTION_TYPES_TABLE = "question_types"
@@ -50,8 +51,8 @@ class Questions(context: Context) : PhpReviewDb(context) {
             bindParams.add(questionType)
         }
 
-        questionsQuery.append(" ORDER BY RANDOM() LIMIT ?")
-        bindParams.add(questionNum)
+        questionsQuery.append(" AND q._id IN (SELECT _id FROM questions ORDER BY RANDOM() LIMIT ?)")
+        bindParams.add(AppPreferenceUtil(context).getQuestionsLimit(questionNum.toInt()).toString())
 
         val questionsCursor = database.rawQuery(questionsQuery.toString(), bindParams.toTypedArray())
         questionsCursor.moveToFirst()

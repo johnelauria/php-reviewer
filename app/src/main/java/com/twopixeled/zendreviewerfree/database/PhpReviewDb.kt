@@ -15,7 +15,7 @@ const val DB_NAME = "php_review"
 abstract class PhpReviewDb(ctx: Context) : SQLiteOpenHelper(ctx, DB_NAME, null, 1) {
     protected lateinit var database: SQLiteDatabase
     private val dbFile = ctx.getDatabasePath(DB_NAME).absolutePath
-    private val context = ctx
+    protected val context = ctx
 
     init {
         if (!databaseExists()) copyDataBase()

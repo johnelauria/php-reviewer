@@ -7,4 +7,12 @@
         android:orderInCategory="100"
         android:title="@string/action_about"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_unlock_questions"
+        android:title="@string/getQuestions" />
+
+    <item
+        android:id="@+id/action_buy_full_app"
+        android:title="@string/buyFullVersion" />
 </menu>

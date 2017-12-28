@@ -41,6 +41,13 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <activity android:name="com.twopixeled.zendreviewerfree.UnlockQuestionsActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.UNLOCK_QUESTIONS_FREE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
