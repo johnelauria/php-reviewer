@@ -1,4 +1,4 @@
-package com.twopixeled.zendreviewer.database
+package com.twopixeled.zendreviewerfree.database
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase

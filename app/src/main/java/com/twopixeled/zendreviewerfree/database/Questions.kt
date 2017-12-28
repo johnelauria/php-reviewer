@@ -1,8 +1,8 @@
-package com.twopixeled.zendreviewer.database
+package com.twopixeled.zendreviewerfree.database
 
 import android.content.Context
-import com.twopixeled.zendreviewer.data.QuestionsData
-import com.twopixeled.zendreviewer.util.TextUtil
+import com.twopixeled.zendreviewerfree.data.QuestionsData
+import com.twopixeled.zendreviewerfree.util.TextUtil
 
 const val QUESTION_TYPES_TABLE = "question_types"
 

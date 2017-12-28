@@ -1,4 +1,4 @@
-package com.twopixeled.zendreviewer.util
+package com.twopixeled.zendreviewerfree.util
 
 import org.junit.Test
 import org.junit.Assert.assertEquals

@@ -7,7 +7,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "com.twopixeled.zendreviewer"
+        applicationId "com.twopixeled.zendreviewerfree"
         minSdkVersion 15
         targetSdkVersion 26
         versionCode 4

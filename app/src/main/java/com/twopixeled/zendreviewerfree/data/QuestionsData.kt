@@ -1,4 +1,4 @@
-package com.twopixeled.zendreviewer.data
+package com.twopixeled.zendreviewerfree.data
 
 import java.util.*
 

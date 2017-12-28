@@ -1,4 +1,4 @@
-package com.twopixeled.zendreviewer
+package com.twopixeled.zendreviewerfree
 
 import android.app.AlertDialog
 import android.content.Context
@@ -16,9 +16,9 @@ import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import com.twopixeled.zendreviewer.data.QuestionsData
-import com.twopixeled.zendreviewer.database.Questions
-import com.twopixeled.zendreviewer.util.TextUtil
+import com.twopixeled.zendreviewerfree.data.QuestionsData
+import com.twopixeled.zendreviewerfree.database.Questions
+import com.twopixeled.zendreviewerfree.util.TextUtil
 import kotlinx.android.synthetic.main.activity_questions_list.drawer_layout
 import kotlinx.android.synthetic.main.activity_questions_list.nav_view
 import kotlinx.android.synthetic.main.app_bar_questions_list.toolbar

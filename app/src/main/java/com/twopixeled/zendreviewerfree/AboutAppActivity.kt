@@ -1,4 +1,4 @@
-package com.twopixeled.zendreviewer
+package com.twopixeled.zendreviewerfree
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle

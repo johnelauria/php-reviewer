@@ -1,4 +1,4 @@
-package com.twopixeled.zendreviewer
+package com.twopixeled.zendreviewerfree
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,7 +11,7 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
-import com.twopixeled.zendreviewer.database.Questions
+import com.twopixeled.zendreviewerfree.database.Questions
 
 import kotlinx.android.synthetic.main.activity_main.startQuizFab
 import kotlinx.android.synthetic.main.activity_main.toolbar
@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity(), TextWatcher {
         val categorySpinner = findViewById<Spinner>(R.id.categorySpinner)
 
         startQuizFab.setOnClickListener { _ ->
-            val questionsListIntent = Intent("android.intent.action.QUESTIONS_LIST")
+            val questionsListIntent = Intent("android.intent.action.QUESTIONS_LIST_FREE")
             questionsListIntent.putExtra("questionNum", questionNumET.text.toString())
             questionsListIntent.putExtra("questionType", categorySpinner.selectedItem.toString())
             startActivity(questionsListIntent)
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity(), TextWatcher {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_about -> {
-                startActivity(Intent("android.intent.action.ABOUT_APP"))
+                startActivity(Intent("android.intent.action.ABOUT_APP_FREE"))
                 return true
             }
             else -> super.onOptionsItemSelected(item)
