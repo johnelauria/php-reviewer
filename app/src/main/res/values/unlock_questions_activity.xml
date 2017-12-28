@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="unlockBtnTxt">Watch Video</string>
+    <string name="unlockBtnLoadingTxt">Loading…</string>
+    <string name="unlockBtnWatchTxt">Watch Video</string>
+    <string name="unlockBtnDisabled">Cannot load ads</string>
     <string name="unlockMsgHeader">Unlock more questions</string>
     <string name="unlockMsgBody">
         \tThank you for using the free version of our app! Unlock 15 more questions by clicking the
         button below to watch video ads. Additional questions will be unlocked after the video
         finishes.
+    </string>
+    <string name="unlockMsgBodyThanks">
+        \tThanks for watching! You now have a total of %1$d unlocked questions in your question
+        bank. You may watch more videos again later to unlock more questions, or unlock them all now
+        by purchasing the paid version of this app
+    </string>
+    <string name="unlockMsgBodyCompleted">
+        \tYou have already unlocked all questions! You may still continue watching below. If you
+        wish to remove all ads in this app, you may still do so by purchasing the paid version of
+        this app
     </string>
 </resources>

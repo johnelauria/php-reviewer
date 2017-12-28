@@ -6,10 +6,22 @@
         \tThis application serves as a practice exam to help anyone who are about to take the Zend
         PHP Certification. A total of 900+ questions are available, ranging from topics in PHP5 to
         PHP7.1.
+
+        \n\n\tSince this is a free version, this application contains ads. The first set of 150
+        questions are already available, but the remaining 750 must be unlocked by watching ads from the
+        main menu. Watching a video unlocks 15 questions. You may keep watching until you unlock all
+        900 questions.
+
+        \n\n\tIf you wish to unlock all questions and remove all ads in this application, you may
+        purchase the
+        <a href="https://play.google.com/store/apps/details?id=com.twopixeled.zendreviewer">paid
+        version of the app</a>
+
         \n\n\tJust like the real exam, questions are always provided in random order, so that when
         re-taking the exam, a different set of questions are provided for you. Answer options are
         also randomised to make sure you understand the correct answer rather than the order of
         answers during the next time you see the question again.
+
         \n\n\tWe believe, from our experience, that one of the most effective ways to increase the
         chances of passing the exam is to learn from your mistakes in practice exams, just like this
         one! But your best friend for this will always be php.net.

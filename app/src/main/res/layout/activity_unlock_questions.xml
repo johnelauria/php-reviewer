@@ -29,6 +29,7 @@
                 android:layout_height="wrap_content" />
 
             <TextView
+                android:id="@+id/unlockMsgTV"
                 android:layout_marginTop="20sp"
                 android:text="@string/unlockMsgBody"
                 android:textSize="16sp"
@@ -40,9 +41,10 @@
                 android:textSize="20sp"
                 android:padding="20sp"
                 android:layout_marginTop="60dp"
-                android:text="@string/unlockBtnTxt"
-                android:background="@color/colorAccent"
-                android:textColor="@color/colorPrimaryLight"
+                android:enabled="false"
+                android:text="@string/unlockBtnLoadingTxt"
+                android:background="@color/colorPrimaryLight"
+                android:textColor="@color/colorBackground"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />

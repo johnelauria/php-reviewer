@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import kotlinx.android.synthetic.main.activity_about_app.dev1TV
 import kotlinx.android.synthetic.main.activity_about_app.dev2TV
+import kotlinx.android.synthetic.main.activity_about_app.aboutBodyTV
 
 class AboutAppActivity : AppCompatActivity() {
 
@@ -14,5 +15,6 @@ class AboutAppActivity : AppCompatActivity() {
 
         dev1TV.movementMethod = LinkMovementMethod.getInstance()
         dev2TV.movementMethod = LinkMovementMethod.getInstance()
+        aboutBodyTV.movementMethod = LinkMovementMethod.getInstance()
     }
 }
