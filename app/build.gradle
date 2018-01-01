@@ -25,6 +25,11 @@ android {
             }
         }
     }
+    // Temporary solution for issue in generating signed apk. Remove later once update available
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
 }
 
 dependencies {
