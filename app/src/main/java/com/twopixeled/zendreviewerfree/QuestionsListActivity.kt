@@ -76,9 +76,12 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.questions_list, menu)
-        return true
+        if (questionsList.isNotEmpty()) {
+            menuInflater.inflate(R.menu.questions_list, menu)
+            return true
+        }
+
+        return false
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -250,20 +253,25 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         var firstQuestionID: Int? = null
         questionsList = questionsDB.getQuestions(questionType, questionNum)
 
-        for (question in questionsList) {
-            firstQuestionID = firstQuestionID ?: question.key
-            navView.menu.add(
-                    R.id.questionItemGroup,
-                    question.key,
-                    Menu.NONE,
-                    question.value.trimmedQuestion()
-            )
-            questionsIndex.add(question.key)
-        }
+        if (questionsList.isNotEmpty()) {
+            for (question in questionsList) {
+                firstQuestionID = firstQuestionID ?: question.key
+                navView.menu.add(
+                        R.id.questionItemGroup,
+                        question.key,
+                        Menu.NONE,
+                        question.value.trimmedQuestion()
+                )
+                questionsIndex.add(question.key)
+            }
 
-        navView.menu.setGroupCheckable(R.id.questionItemGroup, true, true)
-        navView.menu.getItem(0).isChecked = true
-        showQuestionAndAns(firstQuestionID!!)
+            navView.menu.setGroupCheckable(R.id.questionItemGroup, true, true)
+            navView.menu.getItem(0).isChecked = true
+            showQuestionAndAns(firstQuestionID!!)
+        } else {
+            questionTV.text = resources.getString(R.string.noQuestionsAvailable)
+            submitFab.visibility = View.GONE
+        }
     }
 
     /**

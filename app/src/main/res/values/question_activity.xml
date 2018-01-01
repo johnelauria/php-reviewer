@@ -10,4 +10,9 @@
     <string name="correctAnswer">Correct Answer: %1$s</string>
     <string name="answerCounter">%1$d / %2$d questions answered</string>
     <string name="questionCntPref">question_count_preference</string>
+    <string name="noQuestionsAvailable">
+        Sorry, this category currently doesn\'t have questions yet. Since you are using the free
+        version, you\'ll have to unlock questions by watching video ads from the main menu, or
+        purchase the full version
+    </string>
 </resources>
