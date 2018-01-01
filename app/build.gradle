@@ -10,8 +10,8 @@ android {
         applicationId "com.twopixeled.zendreviewerfree"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 5
-        versionName "1.1"
+        versionCode 6
+        versionName "1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -24,6 +24,11 @@ android {
                 proguardFile 'proguard-rules.pro'
             }
         }
+    }
+    // Temporary solution for issue in generating signed apk. Remove later once update available
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
     }
 }
 
