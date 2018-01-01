@@ -6,6 +6,7 @@ import android.content.DialogInterface
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.design.widget.NavigationView
+import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -94,22 +95,22 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
 
         while (radioCnt < radioGrp!!.childCount) {
             val radio = radioGrp.getChildAt(radioCnt++) as RadioButton
-            radio.setBackgroundColor(resources.getColor(R.color.colorBackground))
+            radio.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.colorBackground, null))
             markCorrectAnswers(radio, radio.text.toString())
         }
 
         if (selectedRadio != null) {
-            selectedRadio.setBackgroundColor(resources.getColor(R.color.colorPrimaryLight))
+            selectedRadio.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.colorPrimaryLight, null))
             setAnswer(selectedRadio.text.toString(), true)
         }
     }
 
     override fun onCheckedChanged(checkbox: CompoundButton?, isChecked: Boolean) {
         if (isChecked) {
-            checkbox?.setBackgroundColor(resources.getColor(R.color.colorPrimaryLight))
+            checkbox?.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.colorPrimaryLight, null))
             setAnswer(checkbox?.text.toString(), true)
         } else {
-            checkbox?.setBackgroundColor(resources.getColor(R.color.colorBackground))
+            checkbox?.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.colorBackground, null))
             setAnswer(checkbox?.text.toString(), false)
         }
 
@@ -216,7 +217,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
                     answersChkBxGrp.addView(viewElement)
 
                     if (questionData.isAnswerSelected(answer)) {
-                        viewElement.setBackgroundColor(resources.getColor(R.color.colorPrimaryLight))
+                        viewElement.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.colorPrimaryLight, null))
                     }
 
                     viewElement.isChecked = questionData.isAnswerSelected(answer)
@@ -304,7 +305,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
                 correctAnswerTV.text = resources.getString(R.string.correctAnswer, answer)
                 correctAnswerTV.visibility = View.VISIBLE
             } else if (selectedQuestion!!.correctAnswers.contains(answer)) {
-                view?.setBackgroundColor(resources.getColor(R.color.correctAnsMarker))
+                view?.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.correctAnsMarker, null))
                 correctAnswerTV.visibility = View.GONE
             }
         }
@@ -327,7 +328,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             if (isAdded) {
                 if (!selectedQuestion!!.isAnswered()) answeredQuestionCnt++
                 selectedQuestion!!.addUserAnswer(answer)
-                icon = resources.getDrawable(R.mipmap.btn_radio_off_holo)
+                icon = ResourcesCompat.getDrawable(resources, R.mipmap.btn_radio_off_holo, null)
             } else {
                 if (selectedQuestion!!.isAnswered()) answeredQuestionCnt--
                 selectedQuestion!!.removeUserAnswer(answer)
@@ -349,9 +350,9 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
     private fun markCorrectNavs() {
         for (question in questionsIndex.withIndex()) {
             nav_view.menu.getItem(question.index).icon = if (questionsList[question.value]!!.isCorrect) {
-                resources.getDrawable(R.mipmap.btn_check_buttonless_on)
+                ResourcesCompat.getDrawable(resources, R.mipmap.btn_check_buttonless_on, null)
             } else {
-                resources.getDrawable(R.mipmap.ic_menu_close_clear_cancel)
+                ResourcesCompat.getDrawable(resources, R.mipmap.ic_menu_close_clear_cancel, null)
             }
         }
     }

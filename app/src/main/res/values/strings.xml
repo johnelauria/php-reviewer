@@ -2,11 +2,8 @@
     <string name="app_name">Zend PHP7.1 Exam</string>
     <string name="app_label">Zend PHP Exam</string>
     <string name="action_about">About app</string>
-    <string name="title_activity_questions_list">Zend PHP Practice Exam</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">PHP7 practice exam</string>
 </resources>
