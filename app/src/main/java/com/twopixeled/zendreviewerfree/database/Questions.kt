@@ -51,7 +51,7 @@ class Questions(context: Context) : PhpReviewDb(context) {
             bindParams.add(questionType)
         }
 
-        questionsQuery.append(" AND q._id IN (SELECT _id FROM questions ORDER BY RANDOM() LIMIT ?)")
+        questionsQuery.append(" AND q._id IN (SELECT _id FROM questions ORDER BY RANDOM()) LIMIT ?")
         bindParams.add(AppPreferenceUtil(context).getQuestionsLimit(questionNum.toInt()).toString())
 
         val questionsCursor = database.rawQuery(questionsQuery.toString(), bindParams.toTypedArray())

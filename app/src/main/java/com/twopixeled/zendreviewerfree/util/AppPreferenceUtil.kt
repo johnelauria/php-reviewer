@@ -17,7 +17,7 @@ class AppPreferenceUtil(ctx: Context) {
      * Acquire the maximum allowed questions for the exam
      */
     fun getQuestionsLimit(questionQty: Int): Int {
-        val unlockedQuestionsCnt = sharedPref.getInt(questionCntPref, 150)
+        val unlockedQuestionsCnt = sharedPref.getInt(questionCntPref, 300)
 
         return if (questionQty > unlockedQuestionsCnt) {
             unlockedQuestionsCnt
