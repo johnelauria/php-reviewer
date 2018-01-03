@@ -19,6 +19,10 @@ class AppPreferenceUtil(ctx: Context) {
     fun getQuestionsLimit(questionQty: Int): Int {
         val unlockedQuestionsCnt = sharedPref.getInt(questionCntPref, 300)
 
+        if (unlockedQuestionsCnt < 300) {
+            sharedPref.edit().putInt(questionCntPref, 300).apply()
+        }
+
         return if (questionQty > unlockedQuestionsCnt) {
             unlockedQuestionsCnt
         } else {
