@@ -31,10 +31,15 @@ import kotlinx.android.synthetic.main.content_questions_list.questionTV
 import kotlinx.android.synthetic.main.content_questions_list.answerET
 import kotlinx.android.synthetic.main.content_questions_list.answersRadioGrp
 import kotlinx.android.synthetic.main.content_questions_list.answersChkBxGrp
+import kotlinx.android.synthetic.main.content_questions_list.resultsLayout
+import kotlinx.android.synthetic.main.content_questions_list.scoreTV
+import kotlinx.android.synthetic.main.content_questions_list.reviewAnsBtn
+import kotlinx.android.synthetic.main.content_questions_list.backToMenuBtn
 
 class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
         RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener, TextWatcher {
     private lateinit var questionsList: MutableMap<Int, QuestionsData>
+    private lateinit var menu: Menu
     private var selectedQuestion: QuestionsData? = null
     private var isSubmitted = false
     private var questionsIndex = mutableListOf<Int>()
@@ -55,6 +60,8 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         nextFab.setOnClickListener { _ -> nextQuestion() }
         prevFab.setOnClickListener { _ -> prevQuestion() }
         submitFab.setOnClickListener { _ -> submitQuiz() }
+        reviewAnsBtn.setOnClickListener { _ -> drawer_layout.openDrawer(nav_view) }
+        backToMenuBtn.setOnClickListener { _ -> onBackPressed() }
         answerET.addTextChangedListener(this)
         populateNavView(nav_view, intent.extras.getString("questionNum"), intent.extras.getString("questionType"))
     }
@@ -76,6 +83,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.questions_list, menu)
+        this.menu = menu
         return true
     }
 
@@ -85,6 +93,10 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.submit_quiz -> submitQuiz()
+            R.id.backToMenuMI -> {
+                onBackPressed()
+                return true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -188,6 +200,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         answersRadioGrp.removeAllViews()
         answersChkBxGrp.removeAllViews()
         answerET.visibility = View.GONE
+        resultsLayout.visibility = View.GONE
         imm.hideSoftInputFromWindow(answerET.windowToken, 0)
         selectedQuestion = questionData
 
@@ -277,15 +290,14 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             if (questionData.value.isCorrect) score++
         }
 
-        if (score > (totalQuestions / 2)) {
-            questionTV.text = resources.getString(R.string.passedResultMsg, score, totalQuestions)
-            navHeaderText.text = resources.getString(R.string.passed)
-        } else {
-            questionTV.text = resources.getString(R.string.failedResultMsg, score, totalQuestions)
-            navHeaderText.text = resources.getString(R.string.failed)
-        }
+        scoreTV.text = resources.getString(R.string.scoreFormat, score, totalQuestions)
+        navHeaderText.text = resources.getString(R.string.yourScore)
+        resultsLayout.visibility = View.VISIBLE
+        questionTV.text = ""
+        menu.findItem(R.id.submit_quiz).isVisible = false
+        menu.findItem(R.id.backToMenuMI).isVisible = true
 
-        navBodyText.text = resources.getString(R.string.yourScore, score, totalQuestions)
+        navBodyText.text = resources.getString(R.string.scoreFormat, score, totalQuestions)
         answersRadioGrp.visibility = View.GONE
         answersChkBxGrp.visibility = View.GONE
         submitFab.visibility = View.GONE

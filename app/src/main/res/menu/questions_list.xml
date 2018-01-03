@@ -6,4 +6,9 @@
         android:orderInCategory="100"
         android:title="@string/submitQuiz"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/backToMenuMI"
+        android:title="@string/backToMenu"
+        android:visible="false" />
 </menu>
