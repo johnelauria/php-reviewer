@@ -6,7 +6,9 @@
     <string name="failedResultMsg">Sorry, You failed!\nYour score is %1$d / %2$d</string>
     <string name="passed">You Passed!</string>
     <string name="failed">You Failed!</string>
-    <string name="yourScore">Your score is %1$d / %2$d</string>
+    <string name="yourScoreIs">Your score is %1$d / %2$d</string>
+    <string name="yourScore">Your score:</string>
+    <string name="scoreFormat">%1$d / %2$d</string>
     <string name="correctAnswer">Correct Answer: %1$s</string>
     <string name="answerCounter">%1$d / %2$d questions answered</string>
     <string name="questionCntPref">question_count_preference</string>
@@ -15,4 +17,6 @@
         version, you\'ll have to unlock questions by watching video ads from the main menu, or
         purchase the full version
     </string>
+    <string name="backToMenu">Back to main menu</string>
+    <string name="reviewAns">Review Answers</string>
 </resources>
