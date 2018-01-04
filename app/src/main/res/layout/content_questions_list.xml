@@ -9,11 +9,11 @@
     tools:showIn="@layout/app_bar_questions_list">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <com.google.android.gms.ads.AdView
-            xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
             android:id="@+id/questionsAdView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,120 +24,127 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
                 <org.sufficientlysecure.htmltextview.HtmlTextView
                     android:id="@+id/questionTV"
-                    android:textAppearance="@android:style/TextAppearance.Medium"
                     android:layout_width="match_parent"
-                    android:background="@drawable/text_line"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                    android:background="@drawable/text_line"
                     android:padding="10sp"
-                    android:layout_height="wrap_content" />
+                    android:textAppearance="@android:style/TextAppearance.Medium" />
 
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:weightSum="1"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
                     <Space
-                        android:layout_weight="0.025"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.025" />
 
                     <RadioGroup
                         android:id="@+id/answersRadioGrp"
-                        android:layout_weight="0.95"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.95" />
 
                     <Space
-                        android:layout_weight="0.025"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.025" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:weightSum="1"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
                     <Space
-                        android:layout_weight="0.025"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.025" />
 
                     <LinearLayout
-                        android:orientation="vertical"
                         android:id="@+id/answersChkBxGrp"
-                        android:layout_weight="0.95"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.95"
+                        android:orientation="vertical" />
 
                     <Space
-                        android:layout_weight="0.025"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.025" />
                 </LinearLayout>
 
                 <EditText
-                    android:visibility="gone"
-                    android:hint="@string/questionETHint"
                     android:id="@+id/answerET"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:hint="@string/questionETHint"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/correctAnswerTV"
-                    android:textSize="18sp"
-                    android:visibility="gone"
-                    android:textColor="@color/correctAnsTxt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="60dp" />
-
-            <LinearLayout
-                android:id="@+id/resultsLayout"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:textSize="30sp"
-                    android:text="@string/yourScore"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/scoreTV"
-                    android:textSize="30sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <Button
-                    android:id="@+id/reviewAnsBtn"
-                    android:theme="@style/ButtonTheme"
-                    android:layout_marginTop="30dp"
-                    android:textSize="18sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/reviewAns" />
-
-                <Button
-                    android:id="@+id/backToMenuBtn"
-                    android:theme="@style/ButtonTheme"
-                    android:layout_marginTop="25dp"
+                    android:textColor="@color/correctAnsTxt"
                     android:textSize="18sp"
-                    android:text="@string/backToMenu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>        </LinearLayout>
-    </ScrollView></LinearLayout>
+                    android:visibility="gone" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp" />
+
+                <LinearLayout
+                    android:id="@+id/resultsLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/yourScore"
+                        android:textSize="30sp" />
+
+                    <TextView
+                        android:id="@+id/scoreTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="30sp" />
+
+                    <Button
+                        android:id="@+id/reviewAnsBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:text="@string/reviewAns"
+                        android:textSize="18sp"
+                        android:theme="@style/ButtonTheme" />
+
+                    <Button
+                        android:id="@+id/backToMenuBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="25dp"
+                        android:text="@string/backToMenu"
+                        android:textSize="18sp"
+                        android:theme="@style/ButtonTheme" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

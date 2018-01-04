@@ -32,11 +32,11 @@ import kotlinx.android.synthetic.main.content_questions_list.questionTV
 import kotlinx.android.synthetic.main.content_questions_list.answerET
 import kotlinx.android.synthetic.main.content_questions_list.answersRadioGrp
 import kotlinx.android.synthetic.main.content_questions_list.answersChkBxGrp
+import kotlinx.android.synthetic.main.content_questions_list.reviewAnsBtn
+import kotlinx.android.synthetic.main.content_questions_list.backToMenuBtn
 import kotlinx.android.synthetic.main.content_questions_list.questionsAdView
 import kotlinx.android.synthetic.main.content_questions_list.resultsLayout
 import kotlinx.android.synthetic.main.content_questions_list.scoreTV
-import kotlinx.android.synthetic.main.content_questions_list.reviewAnsBtn
-import kotlinx.android.synthetic.main.content_questions_list.backToMenuBtn
 
 class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
         RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener, TextWatcher {
@@ -84,10 +84,11 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-         if (questionsList.isNotEmpty()) {
-        menuInflater.inflate(R.menu.questions_list, menu)
-        this.menu = menureturn true
-    }
+        if (questionsList.isNotEmpty()) {
+            menuInflater.inflate(R.menu.questions_list, menu)
+            this.menu = menu
+            return true
+        }
 
         return false
     }
