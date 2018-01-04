@@ -5,7 +5,10 @@ package com.twopixeled.zendreviewerfree.util
  */
 class TextUtil {
     fun formatAnswerOpts(answer: String): String {
-        return answer.replace(Regex("</?pre>"), "")
+        var newContent = answer.replace(Regex("</?pre>"), "")
+        newContent = newContent.replace(Regex("&lt;?"), "<")
+        newContent = newContent.replace(Regex("&gt;?"), ">")
+        return newContent
     }
 
     fun formatHTMLToAndroid(text: String): String {
