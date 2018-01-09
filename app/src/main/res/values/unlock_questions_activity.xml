@@ -19,4 +19,8 @@
         wish to remove all ads in this app, you may still do so by purchasing the paid version of
         this app
     </string>
+    <string name="buyFullVersionHeader">Buy full version</string>
+    <string name="buyFullVersionBody">
+        \tWant to unlock all 900 questions instantly and remove all ads?
+    </string>
 </resources>

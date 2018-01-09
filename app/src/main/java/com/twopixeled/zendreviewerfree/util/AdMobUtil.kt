@@ -9,6 +9,7 @@ class AdMobUtil {
     fun buildAdRequest(): AdRequest {
         return AdRequest.Builder()
                 .addTestDevice("22EC10AF2DE9A828E79AA6AF1F4C779D")
+                .addTestDevice("31E1E1F56EF391C24BAFC18A4758439D")
                 .build()
     }
 }

@@ -1,5 +1,7 @@
 package com.twopixeled.zendreviewerfree
 
+import android.content.Intent
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -12,6 +14,7 @@ import com.twopixeled.zendreviewerfree.util.AdMobUtil
 import com.twopixeled.zendreviewerfree.util.AppPreferenceUtil
 import kotlinx.android.synthetic.main.activity_unlock_questions.unlockQuestionsBtn
 import kotlinx.android.synthetic.main.activity_unlock_questions.unlockMsgTV
+import kotlinx.android.synthetic.main.activity_unlock_questions.buyAppBtn
 
 class UnlockQuestionsActivity : AppCompatActivity(), RewardedVideoAdListener, View.OnClickListener {
     private lateinit var mRewardedVideoAd: RewardedVideoAd
@@ -25,6 +28,7 @@ class UnlockQuestionsActivity : AppCompatActivity(), RewardedVideoAdListener, Vi
         loadRewardedVideoAd()
 
         unlockQuestionsBtn.setOnClickListener(this)
+        buyAppBtn.setOnClickListener { buyApp() }
     }
 
     override fun onClick(view: View?) {
@@ -95,5 +99,13 @@ class UnlockQuestionsActivity : AppCompatActivity(), RewardedVideoAdListener, Vi
         } else {
             unlockMsgTV.text = resources.getString(R.string.unlockMsgBodyCompleted)
         }
+    }
+
+    private fun buyApp() {
+        val browserIntent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://play.google.com/store/apps/details?id=com.twopixeled.zendreviewer")
+        )
+        startActivity(browserIntent)
     }
 }

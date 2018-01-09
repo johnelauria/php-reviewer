@@ -3,6 +3,7 @@ package com.twopixeled.zendreviewerfree
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -37,6 +38,7 @@ import kotlinx.android.synthetic.main.content_questions_list.backToMenuBtn
 import kotlinx.android.synthetic.main.content_questions_list.questionsAdView
 import kotlinx.android.synthetic.main.content_questions_list.resultsLayout
 import kotlinx.android.synthetic.main.content_questions_list.scoreTV
+import kotlinx.android.synthetic.main.content_questions_list.unlockMoreBtn
 
 class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
         RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener, TextWatcher {
@@ -64,6 +66,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         submitFab.setOnClickListener { _ -> submitQuiz() }
         reviewAnsBtn.setOnClickListener { _ -> drawer_layout.openDrawer(nav_view) }
         backToMenuBtn.setOnClickListener { _ -> onBackPressed() }
+        unlockMoreBtn.setOnClickListener { _ -> startActivity(Intent("android.intent.action.UNLOCK_QUESTIONS_FREE")) }
         answerET.addTextChangedListener(this)
         populateNavView(nav_view, intent.extras.getString("questionNum"), intent.extras.getString("questionType"))
         questionsAdView.loadAd(AdMobUtil().buildAdRequest())

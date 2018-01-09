@@ -135,6 +135,15 @@
                         android:theme="@style/ButtonTheme" />
 
                     <Button
+                        android:id="@+id/unlockMoreBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:text="@string/unlockMsgHeader"
+                        android:textSize="18sp"
+                        android:theme="@style/ButtonTheme" />
+
+                    <Button
                         android:id="@+id/backToMenuBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
