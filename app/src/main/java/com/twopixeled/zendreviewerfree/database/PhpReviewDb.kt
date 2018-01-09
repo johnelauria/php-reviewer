@@ -6,7 +6,9 @@ import android.database.sqlite.SQLiteOpenHelper
 import java.io.FileOutputStream
 import java.io.IOException
 import android.database.sqlite.SQLiteException
+import android.util.Log
 import android.widget.Toast
+import com.twopixeled.zendreviewerfree.util.AppPreferenceUtil
 import java.io.File
 
 
@@ -14,11 +16,18 @@ const val DB_NAME = "php_review"
 
 abstract class PhpReviewDb(ctx: Context) : SQLiteOpenHelper(ctx, DB_NAME, null, 1) {
     protected lateinit var database: SQLiteDatabase
-    private val dbFile = ctx.getDatabasePath(DB_NAME).absolutePath
     protected val context = ctx
 
+    private val dbVersion = 1
+    private val dbFile = ctx.getDatabasePath(DB_NAME).absolutePath
+
     init {
-        if (!databaseExists()) copyDataBase()
+        val appPref = AppPreferenceUtil(context)
+
+        if (!databaseExists() || appPref.getDatabaseVersion() != dbVersion) {
+            copyDataBase()
+            appPref.setDatabaseVersion(dbVersion)
+        }
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -34,7 +43,6 @@ abstract class PhpReviewDb(ctx: Context) : SQLiteOpenHelper(ctx, DB_NAME, null, 
      * @return true if it exists, false if it doesn't
      */
     private fun databaseExists(): Boolean {
-
         var checkDB: SQLiteDatabase? = null
 
         try {

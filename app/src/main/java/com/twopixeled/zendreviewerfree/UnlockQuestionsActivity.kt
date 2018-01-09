@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.content.res.ResourcesCompat
 import android.view.View
 import android.widget.Toast
 import com.google.android.gms.ads.MobileAds
@@ -48,7 +49,7 @@ class UnlockQuestionsActivity : AppCompatActivity(), RewardedVideoAdListener, Vi
     override fun onRewardedVideoAdLoaded() {
         unlockQuestionsBtn.text = resources.getString(R.string.unlockBtnWatchTxt)
         unlockQuestionsBtn.isEnabled = true
-        unlockQuestionsBtn.setBackgroundColor(resources.getColor(R.color.colorAccent))
+        unlockQuestionsBtn.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.colorAccent, null))
     }
 
     override fun onRewardedVideoAdOpened() {
@@ -59,7 +60,7 @@ class UnlockQuestionsActivity : AppCompatActivity(), RewardedVideoAdListener, Vi
         val appPreference = AppPreferenceUtil(this)
 
         appPreference.addMoreQuestions()
-        updateBodyMsg(appPreference.getQuestionsLimit(9999))
+        updateBodyMsg(appPreference.getQuestionsLimit())
         Toast.makeText(this, "15 questions unlocked", Toast.LENGTH_LONG).show()
     }
 
@@ -78,7 +79,7 @@ class UnlockQuestionsActivity : AppCompatActivity(), RewardedVideoAdListener, Vi
     private fun loadRewardedVideoAd() {
         unlockQuestionsBtn.isEnabled = false
         unlockQuestionsBtn.text = resources.getString(R.string.unlockBtnLoadingTxt)
-        unlockQuestionsBtn.setBackgroundColor(resources.getColor(R.color.colorPrimaryLight))
+        unlockQuestionsBtn.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.colorPrimaryLight, null))
         mRewardedVideoAd.loadAd(
                 "ca-app-pub-8537542711636630/8085686460",
                 AdMobUtil().buildAdRequest()

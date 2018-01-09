@@ -12,18 +12,6 @@ const val QUESTION_TYPES_TABLE = "question_types"
  */
 class Questions(context: Context) : PhpReviewDb(context) {
     private val questionTypeKey = "question_type"
-    private val questionTypeMap = mapOf(
-            "Arrays" to "ARR",
-            "PHP Basics" to "BASIC",
-            "Database Programming" to "DB",
-            "Functions" to "FUNC",
-            "Streams and Network Programming" to "NET",
-            "Object Oriented Programming" to "OOP",
-            "Security" to "SEC",
-            "Strings" to "STR",
-            "Web Programming" to "WEB",
-            "XML and Web Services" to "XML"
-    )
 
     /**
      * Query the list of question types from database
@@ -57,18 +45,16 @@ class Questions(context: Context) : PhpReviewDb(context) {
         val bindParams = mutableListOf<String>()
         val questionsQuery = StringBuilder("SELECT q._id, q.question, q.answer_type_id, qt.question_type FROM questions q")
         questionsQuery.append(" INNER JOIN question_types qt ON q.question_type_id = qt._id")
-        questionsQuery.append(" WHERE q._id IN (")
-        // start of where()
-        questionsQuery.append(" SELECT q._id FROM questions q")
+        questionsQuery.append(" WHERE q._id IN (SELECT _id FROM questions LIMIT ?)")
+        bindParams.add(AppPreferenceUtil(context).getQuestionsLimit().toString())
 
         if ("All" != questionType) {
-            questionsQuery.append(" WHERE q.question_type_id = ?")
-            bindParams.add(questionTypeMap[questionType]!!)
+            questionsQuery.append(" AND qt.question_type = ?")
+            bindParams.add(questionType)
         }
 
-        questionsQuery.append(" LIMIT ?) ORDER BY RANDOM()")
-        // end of where()
-        bindParams.add(AppPreferenceUtil(context).getQuestionsLimit(questionNum.toInt()).toString())
+        questionsQuery.append(" ORDER BY RANDOM() LIMIT ? ")
+        bindParams.add(questionNum)
 
         val questionsCursor = database.rawQuery(questionsQuery.toString(), bindParams.toTypedArray())
         questionsCursor.moveToFirst()

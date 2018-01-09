@@ -7,6 +7,7 @@ class AppPreferenceUtil(ctx: Context) {
     private val context = ctx
     private val appPrefKey = "zend_reviewer_app_pref_key"
     private val questionCntPref = "question_count_pref"
+    private val dbVersionPref = "db_version_pref"
     private val sharedPref: SharedPreferences
 
     init {
@@ -16,25 +17,30 @@ class AppPreferenceUtil(ctx: Context) {
     /**
      * Acquire the maximum allowed questions for the exam
      */
-    fun getQuestionsLimit(questionQty: Int): Int {
-        val unlockedQuestionsCnt = sharedPref.getInt(questionCntPref, 300)
-
-        if (unlockedQuestionsCnt < 300) {
-            sharedPref.edit().putInt(questionCntPref, 300).apply()
-        }
-
-        return if (questionQty > unlockedQuestionsCnt) {
-            unlockedQuestionsCnt
-        } else {
-            questionQty
-        }
+    fun getQuestionsLimit(): Int {
+        return sharedPref.getInt(questionCntPref, 300)
     }
 
     /**
      * Unlocks 15 more questions from the question bank
      */
     fun addMoreQuestions() {
-        val currentLimit = getQuestionsLimit(9999)
+        val currentLimit = getQuestionsLimit()
         sharedPref.edit().putInt(questionCntPref, currentLimit + 15).apply()
+    }
+
+    /**
+     * Get the current database version of the app. This is used to determine if the database
+     * should be updated or not.
+     */
+    fun getDatabaseVersion(): Int {
+        return sharedPref.getInt(dbVersionPref, 0)
+    }
+
+    /**
+     * Sets the current database version
+     */
+    fun setDatabaseVersion(version: Int) {
+        sharedPref.edit().putInt(dbVersionPref, version).apply()
     }
 }
