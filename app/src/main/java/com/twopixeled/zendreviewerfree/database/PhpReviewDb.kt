@@ -14,11 +14,11 @@ import java.io.File
 
 const val DB_NAME = "php_review"
 
-abstract class PhpReviewDb(ctx: Context) : SQLiteOpenHelper(ctx, DB_NAME, null, 1) {
+abstract class PhpReviewDb(ctx: Context) : SQLiteOpenHelper(ctx, DB_NAME, null, 2) {
     protected lateinit var database: SQLiteDatabase
     protected val context = ctx
 
-    private val dbVersion = 1
+    private val dbVersion = 2
     private val dbFile = ctx.getDatabasePath(DB_NAME).absolutePath
 
     init {

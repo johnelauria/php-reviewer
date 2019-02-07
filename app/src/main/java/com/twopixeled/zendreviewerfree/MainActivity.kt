@@ -15,7 +15,6 @@ import android.widget.Spinner
 import com.google.android.gms.ads.MobileAds
 import com.twopixeled.zendreviewerfree.database.Questions
 import com.twopixeled.zendreviewerfree.util.AdMobUtil
-
 import kotlinx.android.synthetic.main.activity_main.startQuizFab
 import kotlinx.android.synthetic.main.activity_main.toolbar
 import kotlinx.android.synthetic.main.content_main.mainAdView

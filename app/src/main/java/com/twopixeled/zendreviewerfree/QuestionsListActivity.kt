@@ -18,6 +18,8 @@ import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
 import com.twopixeled.zendreviewerfree.data.QuestionsData
 import com.twopixeled.zendreviewerfree.database.Questions
 import com.twopixeled.zendreviewerfree.util.AdMobUtil
@@ -44,6 +46,7 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener, TextWatcher {
     private lateinit var questionsList: MutableMap<Int, QuestionsData>
     private lateinit var menu: Menu
+    private lateinit var mInterstitialAd: InterstitialAd
     private var selectedQuestion: QuestionsData? = null
     private var isSubmitted = false
     private var questionsIndex = mutableListOf<Int>()
@@ -70,6 +73,9 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         answerET.addTextChangedListener(this)
         populateNavView(nav_view, intent.extras.getString("questionNum"), intent.extras.getString("questionType"))
         questionsAdView.loadAd(AdMobUtil().buildAdRequest())
+        mInterstitialAd = InterstitialAd(this)
+        mInterstitialAd.adUnitId = "ca-app-pub-8537542711636630/9688547757"
+        mInterstitialAd.loadAd(AdMobUtil().buildAdRequest())
     }
 
     override fun onBackPressed() {
@@ -318,6 +324,10 @@ class QuestionsListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         answerET.visibility = View.GONE
         isSubmitted = true
         markCorrectNavs()
+
+        if (mInterstitialAd.isLoaded) {
+            mInterstitialAd.show()
+        }
         return true
     }
 
